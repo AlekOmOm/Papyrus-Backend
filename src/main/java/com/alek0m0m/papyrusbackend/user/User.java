@@ -16,7 +16,7 @@ public class User extends BaseEntity {
     private String password;
     private String role;
 
-    // Setters (returning this)
+    // Setters (returning User)
     public User setId(long id) {
         this.id = id;
         return this;

@@ -22,27 +22,16 @@ If the file doesn’t exist, create a new one.
 ### 2. Add the following to your settings.xml:
 
 ```xml
-<settings>
-    <servers>
-        <server>
-            <id>github</id>
-            <username>YOUR_GITHUB_USERNAME</username>
-            <password>${env.GITHUB_TOKEN}</password> <!-- Or replace with your PAT directly -->
-        </server>
-    </servers>
-</settings>
-```
-```
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-<servers>
-<server>
-<id>github</id>
-<username>YOUR_GITHUB_USERNAME</username>
-<password>${env.GITHUB_TOKEN}</password>
-</server>
-</servers>
+  <servers>
+    <server>
+    <id>github</id>
+    <username>YOUR_GITHUB_USERNAME</username>
+    <password>${env.GITHUB_TOKEN}</password> <!-- Use system env. variable: GITHUB_TOKEN -->
+    </server>
+  </servers>
 </settings>
 ```
 
