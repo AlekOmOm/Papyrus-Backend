@@ -17,16 +17,11 @@ public class UserDTOInput {
     private String password;
     private String role;
 
-
-    // Getters and Setters
-
-
-
+    // Getters and Setters (Lombok Getter, Setter returning UserDTOInput)
     public UserDTOInput setId(long id) {
         this.id = id;
         return this;
     }
-
 
     public UserDTOInput setName(String name) {
         this.name = name;
