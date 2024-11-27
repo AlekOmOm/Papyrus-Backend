@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 
 
-@Setter
+
 @Getter
 @ToString
 @NoArgsConstructor
@@ -20,54 +20,32 @@ public class UserDTOInput {
 
     // Getters and Setters
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
+
+    public UserDTOInput setId(long id) {
         this.id = id;
-    }
-    public String getName() {
-        return name;
+        return this;
     }
 
-    public void setName(String name) {
+
+    public UserDTOInput setName(String name) {
         this.name = name;
+        return this;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public UserDTOInput setEmail(String email) {
         this.email = email;
+        return this;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
+    public UserDTOInput setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
+    public UserDTOInput setRole(String role) {
         this.role = role;
+        return this;
     }
-
-    @Override
-    public String toString() {
-        return "UserDTOInput{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
-
 
 }
