@@ -32,6 +32,20 @@ If the file doesn’t exist, create a new one.
     </servers>
 </settings>
 ```
+```
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<servers>
+<server>
+<id>github</id>
+<username>YOUR_GITHUB_USERNAME</username>
+<password>${env.GITHUB_TOKEN}</password>
+</server>
+</servers>
+</settings>
+```
+
 
 ### 3. PAT with read:packages permission to access the library.
 - Replace YOUR_GITHUB_USERNAME with your GitHub username.
