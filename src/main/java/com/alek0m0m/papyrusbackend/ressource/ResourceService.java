@@ -21,7 +21,7 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
     public ResourceDTO save(ResourceDTO input) {
 
         // filter added to prevent duplicate users
-        List<ResourceDTO> existingResources = findByNameAndAuthor(input.getName(), input.getEmail());
+        List<ResourceDTO> existingResources = findByNameAndAuthor(input.getName(), input.getAuthor());
         if (!existingResources.isEmpty()) {
             return existingResources.get(0);
         }
@@ -38,7 +38,7 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
                 .filter(dto ->
                         dto.getName().equals(name)
                                 &&
-                                dto.getEmail().equals(author))
+                                dto.getAuthor().equals(author))
                 .toList();
 
 
