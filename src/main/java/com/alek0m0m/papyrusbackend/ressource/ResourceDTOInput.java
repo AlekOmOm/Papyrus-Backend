@@ -26,7 +26,12 @@ public class ResourceDTOInput {
 
     // setters return ResourceDTOInput
 
-    private ResourceDTOInput setName (String name) {
+    public ResourceDTOInput setId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public ResourceDTOInput setName (String name) {
         this.name = name;
         return this;
     }
@@ -45,7 +50,6 @@ public class ResourceDTOInput {
         this.toDate = toDate;
         return this;
     }
-
 
     public ResourceDTOInput setUsers(List<UserDTOInput> users) {
         this.users = users;
