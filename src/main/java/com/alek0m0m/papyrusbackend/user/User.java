@@ -22,7 +22,6 @@ public class User extends BaseEntity {
     private String password;
     private String role;
 
-
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
     private List<Ressource> ressources = new ArrayList<>();
