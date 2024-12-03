@@ -16,6 +16,17 @@ public class User extends BaseEntity {
     private String password;
     private String role;
 
+    /* JSON Payload
+
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@mail.com"
+        "password": "123",
+        "role": "user"
+
+     */
+
     // Setters (returning User)
     public User setId(long id) {
         this.id = id;
