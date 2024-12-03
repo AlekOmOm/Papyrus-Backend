@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FieldRepository extends BaseRepository<Field> {
-    @Modifying
-    @Query(value = "ALTER TABLE field AUTO_INCREMENT = 1", nativeQuery = true)
-    void resetAutoIncrement();
+
 }

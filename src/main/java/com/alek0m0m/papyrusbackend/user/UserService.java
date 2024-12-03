@@ -1,13 +1,11 @@
 package com.alek0m0m.papyrusbackend.user;
 
-import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMapper, UserRepository> {
@@ -17,9 +15,17 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
         super(repository, mapper);
     }
 
+    @Override
+    protected void resetIncrement() {
+        getRepository().resetAutoIncrement();
+    }
+
 
     @Transactional
     public UserDTO save(UserDTO input) {
+        resetIncrement();
+
+        System.out.println("UserService increment called");
 
         // filter added to prevent duplicate users
         List<UserDTO> existingUsers = findByNameAndEmail(input.getName(), input.getEmail());

@@ -17,22 +17,22 @@ import java.util.Arrays;
 public class InitData implements CommandLineRunner {
 
     @Autowired
-    private ResourceRepository ressourceRepository;
-
-    @Autowired
     private UserRepository userRepository;
-    private final UserDTOInput[] users = {
-            new UserDTOInput(0, "name", "email", "password", "role"),
-            new UserDTOInput(0, "Bob", "Bob@mail.com", "123", "user"),
-            new UserDTOInput(0, "Alice", "Alice@mail.com", "123", "user"),
-            new UserDTOInput(0, "Admin", "Admin@mail.com", "123", "admin")
-    };
     @Autowired
     private UserService userService;
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private ResourceRepository resourceRepository;
+
+    private final UserDTOInput[] users = {
+            new UserDTOInput(0, "name", "email", "password", "role"),
+            new UserDTOInput(0, "Bob", "Bob@mail.com", "123", "user"),
+            new UserDTOInput(0, "Alice", "Alice@mail.com", "123", "user"),
+            new UserDTOInput(0, "Admin", "Admin@mail.com", "123", "admin")
+    };
 
     @Override
     public void run(String... args) throws Exception {
@@ -60,9 +60,9 @@ public class InitData implements CommandLineRunner {
     }
 
     private void saveResources(Resource Testressource1, Resource Testressource2, Resource Testressource3) {
-        ressourceRepository.save(Testressource1);
-        ressourceRepository.save(Testressource2);
-        ressourceRepository.save(Testressource3);
+        resourceRepository.save(Testressource1);
+        resourceRepository.save(Testressource2);
+        resourceRepository.save(Testressource3);
     }
 
 

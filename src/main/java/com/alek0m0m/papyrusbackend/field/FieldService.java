@@ -10,9 +10,17 @@ import java.util.List;
 @Service
 public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, FieldMapper, FieldRepository> {
 
+    private final FieldRepository repository;
+
     @Autowired
     public FieldService(FieldRepository repository, FieldMapper mapper) {
         super(repository, mapper);
+        this.repository = repository;
+    }
+
+    @Override
+    protected void resetIncrement() {
+        System.out.println("field resetIncrement");
     }
 
 

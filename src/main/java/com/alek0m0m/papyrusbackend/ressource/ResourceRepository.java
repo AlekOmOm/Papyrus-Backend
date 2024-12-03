@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResourceRepository extends BaseRepository<Resource> {
-    @Modifying
-    @Query(value = "ALTER TABLE resource AUTO_INCREMENT = 1", nativeQuery = true)
-    void resetAutoIncrement();
+
+
+
 }
