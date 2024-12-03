@@ -1,4 +1,4 @@
-package com.alek0m0m.papyrusbackend.Config;
+package com.alek0m0m.papyrusbackend.config;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.ressource.ResourceService;
