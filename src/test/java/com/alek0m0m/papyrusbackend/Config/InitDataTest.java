@@ -10,10 +10,10 @@ import org.mockito.*;
 
 import static org.mockito.Mockito.*;
 
-// the Ressouce repo is created to do the save method
 
+
+// this test class is used to test if the data can be saved to mocked repositories
 class InitDataTest {
-
 
     @Mock
     private RessourceRepository ressourceRepository;
@@ -32,6 +32,7 @@ class InitDataTest {
 
     @Test
     void run() throws Exception {
+        //call the run method
         initData.run();
 
         //secures that the save method is called 3 times for each repository

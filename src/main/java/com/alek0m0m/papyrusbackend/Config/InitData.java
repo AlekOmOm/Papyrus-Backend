@@ -23,6 +23,7 @@ public class InitData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
         // Test users
         User TestUser1 = new User("Per", "PerMail.com", "1234", "User");
         User TestUser2 = new User("Lars", "LarsMail.com", "888", "User");
