@@ -1,16 +1,14 @@
 package com.alek0m0m.papyrusbackend.init;
 
-import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.alek0m0m.papyrusbackend.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Service
-public class InitData implements CommandLineRunner {
+public class InitDataOld implements CommandLineRunner {
 
     private final UserDTOInput[] users = {
         new UserDTOInput(0, "name", "email", "password", "role"),
@@ -23,19 +21,18 @@ public class InitData implements CommandLineRunner {
     private final UserMapper userMapper;
 
     @Autowired
-    public InitData(UserService userService, UserMapper userMapper) {
+    public InitDataOld(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("InitData.run...");
+        // System.out.println("InitData.run...");
 
-        initUsers();
+        // initUsers();
 //        printInit();
 //        printUsers();
-
     }
 
     private void printInit() {

@@ -1,4 +1,4 @@
-/*
+
 package com.alek0m0m.papyrusbackend.user;
 
 import jakarta.persistence.Entity;
@@ -46,4 +46,3 @@ public class UserDTOInput {
 
 }
 
- */

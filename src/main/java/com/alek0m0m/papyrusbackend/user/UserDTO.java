@@ -1,5 +1,4 @@
 
-/*
 package com.alek0m0m.papyrusbackend.user;
 
 
@@ -57,5 +56,3 @@ public class UserDTO extends BaseEntityDTO<User> {
     }
 
 }
-
- */

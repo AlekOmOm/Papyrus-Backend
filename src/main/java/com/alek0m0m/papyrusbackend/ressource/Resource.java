@@ -1,14 +1,12 @@
-package com.alek0m0m.papyrusbackend.Ressource;
+package com.alek0m0m.papyrusbackend.ressource;
 import com.Alek0m0m.library.jpa.BaseEntity;
 import com.alek0m0m.papyrusbackend.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ressource extends BaseEntity {
+public class Resource extends BaseEntity {
 
     private String name;
     private String author;
@@ -33,11 +31,40 @@ public class Ressource extends BaseEntity {
     )
     private List<User> users = new ArrayList<>();
 
-    public Ressource(String name, String author, LocalDate fromDate, LocalDate toDate) {
+    public Resource(String name, String author, LocalDate fromDate, LocalDate toDate) {
         this.name = name;
         this.author = author;
         this.fromDate = fromDate;
         this.toDate = toDate;
     }
 
+    public Resource setId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Resource setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Resource setAuthor(String author) {
+        this.author = author;
+        return this;
+    }
+
+    public Resource setFromDate(LocalDate fromDate) {
+        this.fromDate = fromDate;
+        return this;
+    }
+
+    public Resource setToDate(LocalDate toDate) {
+        this.toDate = toDate;
+        return this;
+    }
+
+    public Resource setUsers(List<User> users) {
+        this.users = users;
+        return this;
+    }
 }

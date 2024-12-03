@@ -45,5 +45,4 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
     }
 
-
 }

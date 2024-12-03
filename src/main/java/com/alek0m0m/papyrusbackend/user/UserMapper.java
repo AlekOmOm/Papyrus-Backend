@@ -1,4 +1,4 @@
-/*package com.alek0m0m.papyrusbackend.user;
+package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.jpa.*;
 
@@ -46,4 +46,3 @@ public class UserMapper extends EntityToDTOMapperImpl<UserDTOInput, UserDTO, Use
     }
 }
 
- */
