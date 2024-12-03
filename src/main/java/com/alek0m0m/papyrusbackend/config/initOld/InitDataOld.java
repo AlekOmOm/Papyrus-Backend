@@ -1,4 +1,4 @@
-package com.alek0m0m.papyrusbackend.init;
+package com.alek0m0m.papyrusbackend.config.initOld;
 
 import com.alek0m0m.papyrusbackend.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
