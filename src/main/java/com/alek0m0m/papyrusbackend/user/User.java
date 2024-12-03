@@ -1,8 +1,13 @@
 package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.jpa.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,17 +20,10 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String role;
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<Ressource> ressources = new ArrayList<>();
 
-    /* JSON Payload
-
-    {
-        "id": 1,
-        "name": "John Doe",
-        "email": "john@mail.com"
-        "password": "123",
-        "role": "user"
-
-     */
 
     // Setters (returning User)
     public User setId(long id) {

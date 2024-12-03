@@ -1,4 +1,7 @@
+
+/*
 package com.alek0m0m.papyrusbackend.user;
+
 
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import lombok.*;
@@ -54,3 +57,5 @@ public class UserDTO extends BaseEntityDTO<User> {
     }
 
 }
+
+ */
