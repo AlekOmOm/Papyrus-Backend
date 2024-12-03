@@ -18,22 +18,22 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     }
 
 
-
     @Transactional
-    public UserDTO save(UserDTOInput input) {
+    public UserDTO save(UserDTO input) {
+
+        // filter added to prevent duplicate users
         List<UserDTO> existingUsers = findByNameAndEmail(input.getName(), input.getEmail());
         if (!existingUsers.isEmpty()) {
             return existingUsers.get(0);
         }
-        return super.save(getDtoMapper().toDTO(input));
+
+        // if no duplicate users, save the user
+        return super.save(input);
     }
 
 
     public List<UserDTO> findByNameAndEmail(String name, String email) {
         List<UserDTO> repoUsers = getDtoMapper().mapToDTOs(getRepository().findAll()).stream().toList();
-
-        System.out.println("UserService.findByNameAndEmail: ");
-        repoUsers.forEach(System.out::println);
 
         return repoUsers.stream()
                 .filter(userDTO ->

@@ -30,29 +30,40 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("InitData.run...");
+
         initUsers();
-        printInit();
-        printUsers();
+//        printInit();
+//        printUsers();
+
     }
 
     private void printInit() {
         System.out.println("Init data:");
+
         Arrays.stream(users).forEach(System.out::println);
+
     }
 
     private void printUsers() {
         System.out.println("printUsers:");
         //userService.findAll().forEach(System.out::println);
 
+    }
+
+    private void printCount(String message) {
         int count = userService.findAll().size();
 
-        System.out.println("Total users saved: " + count);
+        System.out.println(" - "+message+", total users saved: " + count);
     }
 
 
     void initUsers() {
-        Arrays.stream(users).map(userMapper::convert).forEach(userService::save);
-
+        printCount(" before");
+        Arrays.stream(users)
+                .map(userMapper::convert)
+                .forEach(userService::save);
+        printCount(" after");
     }
 
 
