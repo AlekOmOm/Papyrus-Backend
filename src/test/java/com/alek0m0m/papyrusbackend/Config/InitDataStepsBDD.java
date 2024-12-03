@@ -14,7 +14,4 @@ public class InitDataStepsBDD {
     @Autowired
     private InitData initData;
 
-    @Given
-    @When
-    @Then
 }
