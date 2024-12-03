@@ -1,3 +1,4 @@
+/*
 package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
@@ -13,3 +14,5 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     }
 
 }
+
+ */
