@@ -1,11 +1,15 @@
 package com.alek0m0m.papyrusbackend.user;
 
+import com.alek0m0m.papyrusbackend.PapyrusBackendApplication;
 import com.alek0m0m.papyrusbackend.config.InitData;
+import com.alek0m0m.papyrusbackend.field.FieldMapper;
+import com.alek0m0m.papyrusbackend.resource.ResourceMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -15,20 +19,30 @@ import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
+
     @Mock
     private UserRepository userRepository;
 
     @Mock
+    private FieldMapper fieldMapper;
+
+    @Mock
+    private ResourceMapper resourceMapper;
+
+    @InjectMocks
     private UserMapper userMapper;
 
     @InjectMocks
     private UserService userService;
+
 
     private final UserDTOInput[] usersInitData = InitData.getUsersInitData();
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        userMapper = new UserMapper(fieldMapper);
+        userService = new UserService(userRepository, userMapper);
     }
 
     @Test

@@ -44,6 +44,7 @@ public class InitData implements CommandLineRunner {
                         .setEmail("email")
                         .setPassword("password")
                         .setRole("user"),
+
                 new UserDTOInput()
                         .setName("bob")
                         .setEmail("Bob@mail.com")

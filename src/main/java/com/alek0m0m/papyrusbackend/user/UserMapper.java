@@ -31,7 +31,8 @@ public class UserMapper extends EntityToDTOMapperImpl<UserDTOInput, UserDTO, Use
                     .setName(entity.getName())
                     .setEmail(entity.getEmail())
                     .setPassword(entity.getPassword())
-                    .setRole(entity.getRole());
+                    .setRole(entity.getRole())
+                    .setField(fieldMapper.convert(entity.getField()));
         }
         return dto;
     }

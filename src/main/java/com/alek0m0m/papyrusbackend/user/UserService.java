@@ -23,11 +23,12 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
     @Transactional
     public UserDTO save(UserDTO input) {
-        resetIncrement();
-
-        System.out.println("UserService increment called");
 
         // filter added to prevent duplicate users
+        if (input.getName() == null) {
+            return null;
+        }
+
         List<UserDTO> existingUsers = findByNameAndEmail(input.getName(), input.getEmail());
         if (!existingUsers.isEmpty()) {
             return existingUsers.get(0);
@@ -39,7 +40,7 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
 
     public List<UserDTO> findByNameAndEmail(String name, String email) {
-        List<UserDTO> repoUsers = getDtoMapper().mapToDTOs(getRepository().findAll()).stream().toList();
+        List<UserDTO> repoUsers = findAll();
 
         return repoUsers.stream()
                 .filter(userDTO ->

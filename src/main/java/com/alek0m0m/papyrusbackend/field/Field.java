@@ -22,13 +22,11 @@ public class Field extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Resource> resources = new ArrayList<>();
 
-    public Field setResources(List<Resource> resources) {
-        this.resources = resources;
-        return this;
-    }
+
+
     public Field setId(long id) {
         this.id = id;
         return this;
@@ -39,6 +37,9 @@ public class Field extends BaseEntity {
         return this;
     }
 
-
+    public Field setResources(List<Resource> resources) {
+        this.resources = resources;
+        return this;
+    }
 
 }

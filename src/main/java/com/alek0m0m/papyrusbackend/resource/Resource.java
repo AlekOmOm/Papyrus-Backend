@@ -1,10 +1,8 @@
 package com.alek0m0m.papyrusbackend.resource;
 import com.Alek0m0m.library.jpa.BaseEntity;
+import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
