@@ -29,12 +29,9 @@ public class Resource extends BaseEntity {
     )
     private List<User> users = new ArrayList<>();
 
-    public Resource(String name, String author, LocalDate fromDate, LocalDate toDate) {
-        this.name = name;
-        this.author = author;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-    }
+    @ManyToOne
+    @JoinColumn(name="field_id")
+    private Field field;
 
     public Resource setId(long id) {
         this.id = id;
@@ -63,6 +60,11 @@ public class Resource extends BaseEntity {
 
     public Resource setUsers(List<User> users) {
         this.users = users;
+        return this;
+    }
+
+    public Resource setField(Field field) {
+        this.field = field;
         return this;
     }
 }

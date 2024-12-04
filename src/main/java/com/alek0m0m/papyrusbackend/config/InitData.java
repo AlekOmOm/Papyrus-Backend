@@ -6,6 +6,7 @@ import com.alek0m0m.papyrusbackend.field.FieldDTOInput;
 import com.alek0m0m.papyrusbackend.field.FieldRepository;
 import com.alek0m0m.papyrusbackend.field.FieldService;
 import com.alek0m0m.papyrusbackend.resource.Resource;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTOInput;
 import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
 import com.alek0m0m.papyrusbackend.resource.ResourceService;
 import com.alek0m0m.papyrusbackend.user.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,26 +45,51 @@ public class InitData implements CommandLineRunner {
                         .setName("name")
                         .setEmail("email")
                         .setPassword("password")
-                        .setRole("user"),
+                        .setRole("user")
+                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
+                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[0])))),
 
                 new UserDTOInput()
                         .setName("bob")
                         .setEmail("Bob@mail.com")
                         .setPassword("123")
-                        .setRole("user"),
+                        .setRole("user")
+                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
+                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[1])))),
                 new UserDTOInput()
                         .setName("Alice")
                         .setEmail("Alice@mail.com")
                         .setPassword("123")
-                        .setRole("user"),
+                        .setRole("user")
+                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
+                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[2])))),
+
                 new UserDTOInput()
                         .setName("Admin")
                         .setEmail("Admin@mail.com")
                         .setPassword("123")
                         .setRole("admin")
+                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
+                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[0], getResourcesInitData()[1], getResourcesInitData()[2])))),
 
         };
     }
+
+    public static ResourceDTOInput[] getResourcesInitData() {
+        return new ResourceDTOInput[]{
+                new ResourceDTOInput()
+                        .setId(0L)
+                        .setName("Ressource1"),
+                new ResourceDTOInput()
+                        .setId(0L)
+                        .setName("Ressource2"),
+                new ResourceDTOInput()
+                        .setId(0L)
+                        .setName("Ressource3"),
+
+        };
+    }
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -70,13 +97,15 @@ public class InitData implements CommandLineRunner {
 
         initUsers();
 
-        initResources();
-
-        initFields();
     }
 
     void initUsers() {
         printCount(" before", "user", userService);
+
+
+        List<UserDTOInput> users = Arrays.stream(getUsersInitData()).toList();
+
+
         Arrays.stream(getUsersInitData())
                 .map(userMapper::convert)
                 .forEach(userService::save);
@@ -105,9 +134,12 @@ public class InitData implements CommandLineRunner {
 
     private void initResources() {
         // Test ressources
-        Resource Testressource1 = new Resource("Ressource1", "Author1", LocalDate.now(), LocalDate.now().plusDays(1));
-        Resource Testressource2 = new Resource("Ressource2", "Author2", LocalDate.now(), LocalDate.now().plusDays(2));
-        Resource Testressource3 = new Resource("Ressource3", "Author3", LocalDate.now(), LocalDate.now().plusDays(3));
+        Resource Testressource1 = new Resource()
+                .setName("Ressource1").setAuthor("Author1").setFromDate(LocalDate.now()).setToDate((LocalDate.now().plusDays(1)));
+        Resource Testressource2 = new Resource()
+                .setName("Ressource2").setAuthor("Author2").setFromDate(LocalDate.now()).setToDate((LocalDate.now().plusDays(2)));
+        Resource Testressource3 = new Resource()
+                .setName("Ressource3").setAuthor("Author3").setFromDate(LocalDate.now()).setToDate((LocalDate.now().plusDays(3)));
 
         // Saving the Test users and ressources
         printCount(" before", "ressource", resourceService);

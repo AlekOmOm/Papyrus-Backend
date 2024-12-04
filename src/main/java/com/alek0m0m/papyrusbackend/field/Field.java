@@ -22,9 +22,8 @@ public class Field extends BaseEntity {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     private List<Resource> resources = new ArrayList<>();
-
 
 
     public Field setId(long id) {
