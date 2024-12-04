@@ -1,9 +1,9 @@
 package com.alek0m0m.papyrusbackend.config;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
-import com.alek0m0m.papyrusbackend.ressource.ResourceService;
-import com.alek0m0m.papyrusbackend.ressource.Resource;
-import com.alek0m0m.papyrusbackend.ressource.ResourceRepository;
+import com.alek0m0m.papyrusbackend.resource.ResourceService;
+import com.alek0m0m.papyrusbackend.resource.Resource;
+import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
 import com.alek0m0m.papyrusbackend.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

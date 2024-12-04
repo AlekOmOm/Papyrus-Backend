@@ -1,7 +1,7 @@
 package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.jpa.*;
-import com.alek0m0m.papyrusbackend.ressource.Resource;
+import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -24,7 +24,7 @@ public class User extends BaseEntity {
 
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
-    private List<Resource> ressources = new ArrayList<>();
+    private List<Resource> resources = new ArrayList<>();
 
 
     // Setters (returning User)
@@ -50,6 +50,11 @@ public class User extends BaseEntity {
 
     public User setRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    public User setResources(List<Resource> resources) {
+        this.resources = resources;
         return this;
     }
 

@@ -1,7 +1,7 @@
 package com.alek0m0m.papyrusbackend.config;
 
-import com.alek0m0m.papyrusbackend.ressource.Resource;
-import com.alek0m0m.papyrusbackend.ressource.ResourceRepository;
+import com.alek0m0m.papyrusbackend.resource.Resource;
+import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
 import com.alek0m0m.papyrusbackend.user.User;
 import com.alek0m0m.papyrusbackend.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

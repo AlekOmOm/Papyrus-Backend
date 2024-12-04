@@ -1,4 +1,4 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseRESTController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,37 +9,36 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/resources")
+@CrossOrigin("*")
 public class ResourceController extends BaseRESTController<ResourceDTOInput, ResourceDTO, Resource, ResourceMapper, ResourceService, ResourceRepository> {
 
-    private final ResourceService resourceService;
-
     @Autowired
-    public ResourceController(ResourceService service, ResourceService resourceService) {
+    public ResourceController(ResourceService service) {
         super(service);
-        this.resourceService = resourceService;
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<ResourceDTO> saveResouce(@RequestParam ResourceDTO resourceDTO){
-        ResourceDTO savedResource = resourceService.save(resourceDTO);
+    @PostMapping("/saveaspersonalresource")
+    public ResponseEntity<ResourceDTO> saveAsPersonalResource(@RequestParam Long resourceId, @RequestParam Long userId) {
+        ResourceDTO savedResource = service.savePersonalResource(resourceId, userId);
         return ResponseEntity.ok(savedResource);
     }
 
+    /*
     @GetMapping("{id}")
     public ResponseEntity<ResourceDTO> getResourceById(@PathVariable Long id){
-        ResourceDTO resourceDTO = resourceService.findById(id);
+        ResourceDTO resourceDTO = service.findById(id);
         return ResponseEntity.ok(resourceDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<ResourceDTO>> getAllResources(){
-        List<ResourceDTO> resourceDTOs = resourceService.findAll();
+        List<ResourceDTO> resourceDTOs = resourceDTOs.findAll();
         return ResponseEntity.ok(resourceDTOs);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<ResourceDTO>> searchResources(@RequestParam String name, @RequestParam String author){
-        List<ResourceDTO> resourceDTOs = resourceService.findByNameAndAuthor(name, author);
+        List<ResourceDTO> resourceDTOs = service.findByNameAndAuthor(name, author);
         return ResponseEntity.ok(resourceDTOs);
     }
 
