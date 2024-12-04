@@ -1,19 +1,23 @@
 package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.jpa.*;
-import com.alek0m0m.papyrusbackend.ressource.Resource;
+import com.alek0m0m.papyrusbackend.field.Field;
+import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
 @ToString
-@NoArgsConstructor
+
 @AllArgsConstructor
 public class User extends BaseEntity {
 
@@ -33,9 +37,6 @@ public class User extends BaseEntity {
     public User () {
         this.field = new Field("root", new ArrayList<>());
     }
-
-    @OneToOne(mappedBy = "user")
-    private Field field;
 
 
     // Setters (returning User)
@@ -63,5 +64,16 @@ public class User extends BaseEntity {
         this.role = role;
         return this;
     }
+
+    public User setField(Field field) {
+        this.field = field;
+        return this;
+    }
+
+    public User setSavedResources(List<Resource> savedResources) {
+        this.savedResources = savedResources;
+        return this;
+    }
+
 
 }

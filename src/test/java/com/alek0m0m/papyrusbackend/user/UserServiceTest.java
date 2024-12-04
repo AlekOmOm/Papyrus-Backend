@@ -1,29 +1,27 @@
 package com.alek0m0m.papyrusbackend.user;
 
+import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.Alek0m0m.library.spring.web.mvc.BaseRESTController;
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
-import com.alek0m0m.papyrusbackend.field.FieldDTOInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static com.alek0m0m.papyrusbackend.config.InitData.getUsersInitData;
+import static java.util.stream.Collectors.toList;
 
 class UserServiceTest extends BaseRESTController {
 
-    private final UserDTOInput[] users = {
-            new UserDTOInput(0, "name", "email", "password", "role",
-            new UserDTOInput(0, "Bob", "Bob@mail.com", "123", "user"),
-            new UserDTOInput(0, "Alice", "Alice@mail.com", "123", "user"),
-            new UserDTOInput(0, "Admin", "Admin@mail.com", "123", "admin")
-    };
+    private final UserDTOInput[] usersInitData = getUsersInitData();
 
-    private final FieldDTOInput[] fields = {
-            new FieldDTOInput(0, "field1"),
-            new FieldDTOInput(0, "field2"),
-            new FieldDTOInput(0, "field3")
-    };
 
     protected UserServiceTest(BaseService service) {
+
         super(service);
     }
 
@@ -36,10 +34,18 @@ class UserServiceTest extends BaseRESTController {
     void save() {
         // given, when, then
         // 1 given
+        List<UserDTOInput> users = Arrays.stream(usersInitData).toList();
+        List<BaseEntityDTO> userDTOs = users.stream()
+                .map(mapper)
+                        .toList();
 
 
+        // 2 when
+        userDTOs.stream()
+                .map(service::save)
+                .forEach(System.out::println);
 
-
+        // 3 then
 
 
 

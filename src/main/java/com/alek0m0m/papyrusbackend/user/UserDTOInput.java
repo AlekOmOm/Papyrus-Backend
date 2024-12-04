@@ -12,7 +12,6 @@ import java.util.List;
 
 @Getter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class UserDTOInput {
 
@@ -25,6 +24,11 @@ public class UserDTOInput {
     private FieldDTOInput field;
 
     private List<ResourceDTOInput> savedResources = new ArrayList<>();
+
+    public UserDTOInput() {
+        this.field = new FieldDTOInput()
+                .setName("root");
+    }
 
     // Getters and Setters (Lombok Getter, Setter returning UserDTOInput)
     public UserDTOInput setId(long id) {

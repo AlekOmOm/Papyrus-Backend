@@ -10,6 +10,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Setter
 @Getter
@@ -41,9 +42,14 @@ public class UserDTO extends BaseEntityDTO<User> {
                         .map(ResourceDTO::toEntity).toList());
     }
 
+    // ----------------- Business Operations -----------------
 
-    // Getters and Setters
 
+
+
+
+
+    // ----------------- Getters and Setters -----------------
     public UserDTO setId(long id) {
         super.setId(id);
         return this;

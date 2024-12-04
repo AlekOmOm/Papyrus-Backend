@@ -2,18 +2,21 @@ package com.alek0m0m.papyrusbackend.config;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.field.Field;
+import com.alek0m0m.papyrusbackend.field.FieldDTOInput;
 import com.alek0m0m.papyrusbackend.field.FieldRepository;
 import com.alek0m0m.papyrusbackend.field.FieldService;
-import com.alek0m0m.papyrusbackend.ressource.ResourceService;
-import com.alek0m0m.papyrusbackend.ressource.Resource;
-import com.alek0m0m.papyrusbackend.ressource.ResourceRepository;
+import com.alek0m0m.papyrusbackend.resource.Resource;
+import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
+import com.alek0m0m.papyrusbackend.resource.ResourceService;
 import com.alek0m0m.papyrusbackend.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Component
@@ -34,12 +37,31 @@ public class InitData implements CommandLineRunner {
     @Autowired
     private FieldRepository fieldRepository;
 
-    public final UserDTOInput[] users = {
-            new UserDTOInput(0, "name", "email", "password", "role"),
-            new UserDTOInput(0, "Bob", "Bob@mail.com", "123", "user"),
-            new UserDTOInput(0, "Alice", "Alice@mail.com", "123", "user"),
-            new UserDTOInput(0, "Admin", "Admin@mail.com", "123", "admin")
-    };
+    public static UserDTOInput[] getUsersInitData() {
+        return new UserDTOInput[]{
+                new UserDTOInput()
+                        .setName("name")
+                        .setEmail("email")
+                        .setPassword("password")
+                        .setRole("user"),
+                new UserDTOInput()
+                        .setName("bob")
+                        .setEmail("Bob@mail.com")
+                        .setPassword("123")
+                        .setRole("user"),
+                new UserDTOInput()
+                        .setName("Alice")
+                        .setEmail("Alice@mail.com")
+                        .setPassword("123")
+                        .setRole("user"),
+                new UserDTOInput()
+                        .setName("Admin")
+                        .setEmail("Admin@mail.com")
+                        .setPassword("123")
+                        .setRole("admin")
+
+        };
+    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,21 +74,33 @@ public class InitData implements CommandLineRunner {
         initFields();
     }
 
+    void initUsers() {
+        printCount(" before", "user", userService);
+        Arrays.stream(getUsersInitData())
+                .map(userMapper::convert)
+                .forEach(userService::save);
+        printCount(" after", "user", userService);
+    }
+
     // Makes fields one to one with user
     private void initFields(){
-        Field testField1 = new Field().setName("TestField1").setUser(userRepository.findById(1L).orElse(null));
-        Field testField2 = new Field().setName("TestField2").setUser(userRepository.findById(2L).orElse(null));
-        Field testField3 = new Field().setName("TestField3").setUser(userRepository.findById(3L).orElse(null));
+        // outcommented, since Users now instantiated with "root" field
 
-        printCount(" before", "field", fieldService);
-        saveFields(testField1, testField2, testField3);
-        printCount(" after", "field", fieldService);
+
+//        Field testField1 = new Field().setName("TestField1").setUser(userRepository.findById(1L).orElse(null));
+//        Field testField2 = new Field().setName("TestField2").setUser(userRepository.findById(2L).orElse(null));
+//        Field testField3 = new Field().setName("TestField3").setUser(userRepository.findById(3L).orElse(null));
+
+//        printCount(" before", "field", fieldService);
+//        saveFields(testField1, testField2, testField3);
+//        printCount(" after", "field", fieldService);
     }
 
     private void saveFields(Field... fields){
         for (Field field : fields) {
             fieldRepository.save(field);
-        }}
+        }
+    }
 
     private void initResources() {
         // Test ressources
@@ -94,11 +128,5 @@ public class InitData implements CommandLineRunner {
     }
 
 
-    void initUsers() {
-        printCount(" before", "user", userService);
-        Arrays.stream(users)
-                .map(userMapper::convert)
-                .forEach(userService::save);
-        printCount(" after", "user", userService);
-    }
+
 }
