@@ -1,6 +1,9 @@
 package com.alek0m0m.papyrusbackend.config;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
+import com.alek0m0m.papyrusbackend.field.Field;
+import com.alek0m0m.papyrusbackend.field.FieldRepository;
+import com.alek0m0m.papyrusbackend.field.FieldService;
 import com.alek0m0m.papyrusbackend.ressource.ResourceService;
 import com.alek0m0m.papyrusbackend.ressource.Resource;
 import com.alek0m0m.papyrusbackend.ressource.ResourceRepository;
@@ -26,8 +29,12 @@ public class InitData implements CommandLineRunner {
     private ResourceService resourceService;
     @Autowired
     private ResourceRepository resourceRepository;
+    @Autowired
+    private FieldService fieldService;
+    @Autowired
+    private FieldRepository fieldRepository;
 
-    private final UserDTOInput[] users = {
+    public final UserDTOInput[] users = {
             new UserDTOInput(0, "name", "email", "password", "role"),
             new UserDTOInput(0, "Bob", "Bob@mail.com", "123", "user"),
             new UserDTOInput(0, "Alice", "Alice@mail.com", "123", "user"),
@@ -36,16 +43,30 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-
         System.out.println("InitData.run...");
 
         initUsers();
 
         initResources();
 
-
+        initFields();
     }
+
+    // Makes fields one to one with user
+    private void initFields(){
+        Field testField1 = new Field().setName("TestField1").setUser(userRepository.findById(1L).orElse(null));
+        Field testField2 = new Field().setName("TestField2").setUser(userRepository.findById(2L).orElse(null));
+        Field testField3 = new Field().setName("TestField3").setUser(userRepository.findById(3L).orElse(null));
+
+        printCount(" before", "field", fieldService);
+        saveFields(testField1, testField2, testField3);
+        printCount(" after", "field", fieldService);
+    }
+
+    private void saveFields(Field... fields){
+        for (Field field : fields) {
+            fieldRepository.save(field);
+        }}
 
     private void initResources() {
         // Test ressources
