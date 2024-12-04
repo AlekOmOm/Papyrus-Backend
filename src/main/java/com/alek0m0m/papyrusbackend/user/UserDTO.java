@@ -3,7 +3,13 @@ package com.alek0m0m.papyrusbackend.user;
 
 
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
+import com.alek0m0m.papyrusbackend.field.Field;
+import com.alek0m0m.papyrusbackend.field.FieldDTO;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,6 +23,11 @@ public class UserDTO extends BaseEntityDTO<User> {
     private String password;
     private String role;
 
+    private FieldDTO field;
+
+    private List<ResourceDTO> savedResources = new ArrayList<>();
+
+
     @Override
     public User toEntity() {
         return new User()
@@ -24,7 +35,10 @@ public class UserDTO extends BaseEntityDTO<User> {
                 .setName(this.getName())
                 .setEmail(this.getEmail())
                 .setPassword(this.getPassword())
-                .setRole(this.getRole());
+                .setRole(this.getRole())
+                .setField(this.getField().toEntity())
+                .setSavedResources(this.getSavedResources().stream()
+                        .map(ResourceDTO::toEntity).toList());
     }
 
 
@@ -52,6 +66,16 @@ public class UserDTO extends BaseEntityDTO<User> {
 
     public UserDTO setRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    public UserDTO setField(FieldDTO field) {
+        this.field = field;
+        return this;
+    }
+
+    public UserDTO setSavedResources(List<ResourceDTO> savedResources) {
+        this.savedResources = savedResources;
         return this;
     }
 

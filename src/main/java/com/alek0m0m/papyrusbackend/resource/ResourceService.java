@@ -1,4 +1,4 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;

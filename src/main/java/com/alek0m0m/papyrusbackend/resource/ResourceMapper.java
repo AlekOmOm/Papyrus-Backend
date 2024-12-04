@@ -1,10 +1,11 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.jpa.EntityToDTOMapperImpl;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResourceMapper extends EntityToDTOMapperImpl<ResourceDTOInput, ResourceDTO, Resource> {
+
 
 
     @Override

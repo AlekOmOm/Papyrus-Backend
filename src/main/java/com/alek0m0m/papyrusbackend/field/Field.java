@@ -1,6 +1,7 @@
 package com.alek0m0m.papyrusbackend.field;
 
 import com.Alek0m0m.library.jpa.BaseEntity;
+import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,9 +22,13 @@ public class Field extends BaseEntity {
 
     private String name;
 
-    @OneToOne
-    private User user;
+    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
+    private List<Resource> resources = new ArrayList<>();
 
+    public Field setResources(List<Resource> resources) {
+        this.resources = resources;
+        return this;
+    }
     public Field setId(long id) {
         this.id = id;
         return this;
@@ -34,9 +39,6 @@ public class Field extends BaseEntity {
         return this;
     }
 
-    public Field setUser(User user) {
-        this.user = user;
-        return this;
-    }
+
 
 }

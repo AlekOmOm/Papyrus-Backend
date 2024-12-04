@@ -1,6 +1,5 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
-import com.alek0m0m.papyrusbackend.user.User;
 import com.alek0m0m.papyrusbackend.user.UserDTOInput;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

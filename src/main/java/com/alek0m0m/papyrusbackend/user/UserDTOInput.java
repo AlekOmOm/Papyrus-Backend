@@ -1,9 +1,13 @@
 
 package com.alek0m0m.papyrusbackend.user;
 
+import com.alek0m0m.papyrusbackend.field.FieldDTOInput;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTOInput;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -17,6 +21,10 @@ public class UserDTOInput {
     private String email;
     private String password;
     private String role;
+
+    private FieldDTOInput field;
+
+    private List<ResourceDTOInput> savedResources = new ArrayList<>();
 
     // Getters and Setters (Lombok Getter, Setter returning UserDTOInput)
     public UserDTOInput setId(long id) {
@@ -41,6 +49,16 @@ public class UserDTOInput {
 
     public UserDTOInput setRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    public UserDTOInput setField(FieldDTOInput field) {
+        this.field = field;
+        return this;
+    }
+
+    public UserDTOInput setSavedResources(List<ResourceDTOInput> savedResources) {
+        this.savedResources = savedResources;
         return this;
     }
 

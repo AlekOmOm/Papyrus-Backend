@@ -1,10 +1,14 @@
 package com.alek0m0m.papyrusbackend.field;
 
+import com.alek0m0m.papyrusbackend.resource.Resource;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTOInput;
 import com.alek0m0m.papyrusbackend.user.UserDTOInput;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @ToString
@@ -14,7 +18,7 @@ public class FieldDTOInput {
 
     private Long id;
     private String name;
-    private UserDTOInput user;
+    private List<ResourceDTOInput> resources;
 
     // setters return ResourceDTOInput
 
@@ -28,8 +32,8 @@ public class FieldDTOInput {
         return this;
     }
 
-    public FieldDTOInput setUser(UserDTOInput user) {
-        this.user = user;
+    public FieldDTOInput setResources(List<ResourceDTOInput> resources) {
+        this.resources = resources;
         return this;
     }
 
