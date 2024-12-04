@@ -1,6 +1,6 @@
 package com.alek0m0m.papyrusbackend.config;
 
-import com.alek0m0m.papyrusbackend.ressource.ResourceRepository;
+import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
 import com.alek0m0m.papyrusbackend.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +15,8 @@ public class InitDataStepsBDD {
     private ResourceRepository resourceRepository;
     @Autowired
     private InitData initData;
+
+
 
     //Given the application is running
     public void theApplicationIsRunning() {
