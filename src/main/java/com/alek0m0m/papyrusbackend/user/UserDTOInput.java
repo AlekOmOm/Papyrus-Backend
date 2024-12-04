@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDTOInput {
 
-    private long id;
+    private Long id;
     private String name;
     private String email;
     private String password;
@@ -28,10 +28,11 @@ public class UserDTOInput {
     public UserDTOInput() {
         this.field = new FieldDTOInput()
                 .setName("root");
+
     }
 
     // Getters and Setters (Lombok Getter, Setter returning UserDTOInput)
-    public UserDTOInput setId(long id) {
+    public UserDTOInput setId(Long id) {
         this.id = id;
         return this;
     }

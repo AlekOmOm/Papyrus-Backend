@@ -25,7 +25,7 @@ public class ResourceDTOInput {
 
     // setters return ResourceDTOInput
 
-    public ResourceDTOInput setId(long id) {
+    public ResourceDTOInput setId(Long id) {
         this.id = id;
         return this;
     }

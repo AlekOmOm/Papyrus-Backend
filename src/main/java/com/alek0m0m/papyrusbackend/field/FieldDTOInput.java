@@ -8,11 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @ToString
-@NoArgsConstructor
+
 @AllArgsConstructor
 public class FieldDTOInput {
 
@@ -20,8 +21,12 @@ public class FieldDTOInput {
     private String name;
     private List<ResourceDTOInput> resources;
 
-    // setters return ResourceDTOInput
+    public FieldDTOInput () {
+        this.resources = new ArrayList<>();
+    }
 
+
+    // setters return ResourceDTOInput
     public FieldDTOInput setId(long id) {
         this.id = id;
         return this;

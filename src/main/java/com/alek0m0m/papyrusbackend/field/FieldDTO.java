@@ -21,7 +21,7 @@ public class FieldDTO extends BaseEntityDTO<Field> {
 
     private String name;
     private UserDTO user;
-
+    private List<ResourceDTO> resources = new ArrayList<>();
 
     @Override
     public Field toEntity() {
@@ -41,7 +41,6 @@ public class FieldDTO extends BaseEntityDTO<Field> {
         return this;
     }
 
-    private List<ResourceDTO> resources = new ArrayList<>();
 
     public FieldDTO setResources(List<ResourceDTO> resources) {
         this.resources = resources;

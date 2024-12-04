@@ -35,7 +35,13 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
                 .setUsers(this.getUsers());
     }
 
+    @Override
     public ResourceDTO setId(long id) {
+        super.setId(id);
+        return this;
+    }
+
+    public ResourceDTO setId(Long id) {
         super.setId(id);
         return this;
     }

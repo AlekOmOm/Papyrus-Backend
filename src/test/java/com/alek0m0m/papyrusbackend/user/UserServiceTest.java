@@ -1,86 +1,96 @@
 package com.alek0m0m.papyrusbackend.user;
 
-import com.Alek0m0m.library.jpa.BaseEntityDTO;
-import com.Alek0m0m.library.spring.web.mvc.BaseRESTController;
-import com.Alek0m0m.library.spring.web.mvc.BaseService;
+import com.alek0m0m.papyrusbackend.config.InitData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import static com.alek0m0m.papyrusbackend.config.InitData.getUsersInitData;
-import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
-class UserServiceTest extends BaseRESTController {
+class UserServiceTest {
 
-    private final UserDTOInput[] usersInitData = getUsersInitData();
+    @Mock
+    private UserRepository userRepository;
 
+    @Mock
+    private UserMapper userMapper;
 
-    protected UserServiceTest(BaseService service) {
+    @InjectMocks
+    private UserService userService;
 
-        super(service);
-    }
+    private final UserDTOInput[] usersInitData = InitData.getUsersInitData();
 
     @BeforeEach
     void setUp() {
-
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void save() {
-        // given, when, then
-        // 1 given
-        List<UserDTOInput> users = Arrays.stream(usersInitData).toList();
-        List<BaseEntityDTO> userDTOs = users.stream()
-                .map(mapper)
-                        .toList();
+        // given
+        List<UserDTOInput> users = List.of(usersInitData);
+        List<UserDTO> userDTOs = users.stream()
+                .map(userMapper::convert)
+                .toList();
 
 
-        // 2 when
-        userDTOs.stream()
-                .map(service::save)
-                .forEach(System.out::println);
+        // when
+//        when(userMapper.convert(any(UserDTOInput.class))).thenAnswer(invocation -> {
+//            UserDTOInput input = invocation.getArgument(0);
+//            return new UserDTO()
+//                    .setId(input.getId())
+//                    .setName(input.getName())
+//                    .setEmail(input.getEmail())
+//                    .setPassword(input.getPassword())
+//                    .setRole(input.getRole());
+//        });
+//
+//        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+//            User user = invocation.getArgument(0);
+//            return user;
+//        });
 
-        // 3 then
+        // when
+        users.forEach(System.out::println);
+        userDTOs.forEach(System.out::println);
 
+        userDTOs.forEach(userService::save);
 
-
-    }
-
-    @Test
-    void saveAll() {
-
-    }
-
-    @Test
-    void testUpdate() {
+        // then
+        verify(userRepository, times(users.size())).save(any(User.class));
     }
 
     @Test
     void findAll() {
-    }
+        // given
+        List<User> users = List.of(
+                new User().setId(1L).setName("name").setEmail("email").setPassword("password").setRole("user"),
+                new User().setId(2L).setName("bob").setEmail("Bob@mail.com").setPassword("123").setRole("user")
+        );
 
-    @Test
-    void testFindAll() {
-    }
+        when(userRepository.findAll()).thenReturn(users);
+        when(userMapper.convert(any(User.class))).thenAnswer(invocation -> {
+            User user = invocation.getArgument(0);
+            return new UserDTO()
+                    .setId(user.getId())
+                    .setName(user.getName())
+                    .setEmail(user.getEmail())
+                    .setPassword(user.getPassword())
+                    .setRole(user.getRole());
+        });
 
-    @Test
-    void findById() {
-    }
+        // when
+        List<UserDTO> allUsers = userService.findAll();
 
-    @Test
-    void deleteById() {
-    }
-
-    @Test
-    void testDeleteAll() {
-    }
-
-    @Test
-    void findByNameAndEmail() {
+        // then
+        assertEquals(users.size(), allUsers.size());
+        assertTrue(allUsers.stream().anyMatch(user -> user.getName().equals("name")));
+        assertTrue(allUsers.stream().anyMatch(user -> user.getName().equals("bob")));
     }
 }
