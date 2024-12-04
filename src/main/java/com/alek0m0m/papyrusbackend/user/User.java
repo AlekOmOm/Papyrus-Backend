@@ -1,10 +1,12 @@
 package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.jpa.*;
+import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.ressource.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ public class User extends BaseEntity {
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
     private List<Resource> ressources = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private Field field;
 
 
     // Setters (returning User)
