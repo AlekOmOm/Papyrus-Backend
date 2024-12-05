@@ -5,20 +5,19 @@ import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.field.FieldDTOInput;
 import com.alek0m0m.papyrusbackend.field.FieldRepository;
 import com.alek0m0m.papyrusbackend.field.FieldService;
-import com.alek0m0m.papyrusbackend.resource.Resource;
-import com.alek0m0m.papyrusbackend.resource.ResourceDTOInput;
-import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
-import com.alek0m0m.papyrusbackend.resource.ResourceService;
+import com.alek0m0m.papyrusbackend.resource.*;
 import com.alek0m0m.papyrusbackend.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -38,65 +37,64 @@ public class InitData implements CommandLineRunner {
     private FieldService fieldService;
     @Autowired
     private FieldRepository fieldRepository;
+    @Autowired
+    private ResourceMapper resourceMapper;
 
     public static UserDTOInput[] getUsersInitData() {
-        return new UserDTOInput[]{
-                new UserDTOInput()
-                        .setName("name")
-                        .setEmail("email")
-                        .setPassword("password")
-                        .setRole("user")
-                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
-                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[0])))),
+        UserDTOInput user1 = new UserDTOInput()
+                .setName("name")
+                .setEmail("email")
+                .setPassword("password")
+                .setRole("user");
 
-                new UserDTOInput()
-                        .setName("bob")
-                        .setEmail("Bob@mail.com")
-                        .setPassword("123")
-                        .setRole("user")
-                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
-                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[1])))),
-                new UserDTOInput()
-                        .setName("Alice")
-                        .setEmail("Alice@mail.com")
-                        .setPassword("123")
-                        .setRole("user")
-                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
-                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[2])))),
+        UserDTOInput user2 = new UserDTOInput()
+                .setName("bob")
+                .setEmail("Bob@mail.com")
+                .setPassword("123")
+                .setRole("user");
 
-                new UserDTOInput()
-                        .setName("Admin")
-                        .setEmail("Admin@mail.com")
-                        .setPassword("123")
-                        .setRole("admin")
-                        .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
-                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[3])))),
+        UserDTOInput user3 = new UserDTOInput()
+                .setName("Alice")
+                .setEmail("Alice@mail.com")
+                .setPassword("123")
+                .setRole("user");
 
-        };
+
+        UserDTOInput user4 = new UserDTOInput()
+                .setName("Admin")
+                .setEmail("Admin@mail.com")
+                .setPassword("123")
+                .setRole("admin");
+
+//        user1.setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[0]))));
+//        user2.setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[1]))));
+//        user3.setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[2]))));
+//        user4.setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[3]))));
+
+        return new UserDTOInput[]{user1, user2, user3, user4};
     }
 
     public static ResourceDTOInput[] getResourcesInitData() {
         return new ResourceDTOInput[]{
                 new ResourceDTOInput()
-                        .setId(1L)
                         .setName("Metaphysics")
                         .setAuthor("Aristotle")
                         .setFromDate(LocalDate.of(350, 1, 1))
                         .setToDate(LocalDate.of(350, 12, 31)),
                 new ResourceDTOInput()
-                        .setId(2L)
+
                         .setName("The Republic")
                         .setAuthor("Plato")
                         .setFromDate(LocalDate.of(380, 1, 1))
                         .setToDate(LocalDate.of(380, 12, 31)),
                 new ResourceDTOInput()
-                        .setId(3L)
+
                         .setName("The Iliad")
                         .setAuthor("Homer")
                         .setFromDate(LocalDate.of(762, 1, 1))
                         .setToDate(LocalDate.of(762, 12, 31)),
                 new ResourceDTOInput()
-                        .setId(4L)
+
                         .setName("The Art of War")
                         .setAuthor("Sun Tzu")
                         .setFromDate(LocalDate.of(-500, 1, 1))
@@ -111,15 +109,18 @@ public class InitData implements CommandLineRunner {
 
         initUsers();
 
+        // initFields();
+
+        initResources();
+
+        initUserSavedResources();
     }
+
+
+    // --------------------- Init ---------------------
 
     void initUsers() {
         printCount(" before", "user", userService);
-
-        List<UserDTOInput> users = Arrays.stream(getUsersInitData()).toList();
-
-        System.out.println("Users to save:");
-            users.forEach(userDTOInput -> System.out.println(" - "+userDTOInput.getName()+", field and resources: "+userDTOInput.getField()+", "+userDTOInput.getSavedResources()));
 
         Arrays.stream(getUsersInitData())
                 .map(userMapper::convert)
@@ -131,8 +132,6 @@ public class InitData implements CommandLineRunner {
 
 
 
-
-    // Makes fields one to one with user
     private void initFields(){
         // outcommented, since Users now instantiated with "root" field
 
@@ -146,33 +145,23 @@ public class InitData implements CommandLineRunner {
 //        printCount(" after", "field", fieldService);
     }
 
-    private void saveFields(Field... fields){
-        for (Field field : fields) {
-            fieldRepository.save(field);
-        }
-    }
 
     private void initResources() {
-        // Test ressources
-        Resource Testressource1 = new Resource()
-                .setName("Ressource1").setAuthor("Author1").setFromDate(LocalDate.now()).setToDate((LocalDate.now().plusDays(1)));
-        Resource Testressource2 = new Resource()
-                .setName("Ressource2").setAuthor("Author2").setFromDate(LocalDate.now()).setToDate((LocalDate.now().plusDays(2)));
-        Resource Testressource3 = new Resource()
-                .setName("Ressource3").setAuthor("Author3").setFromDate(LocalDate.now()).setToDate((LocalDate.now().plusDays(3)));
 
         // Saving the Test users and ressources
-        printCount(" before", "ressource", resourceService);
-        saveResources(Testressource1, Testressource2, Testressource3);
-        printCount(" after", "ressource", resourceService);
+        printCount(" before", "resource", resourceService);
+        Arrays.stream(getResourcesInitData())
+                .map(resourceMapper::convert)
+                .forEach(resourceService::save);
+        printCount(" after", "resource", resourceService);
     }
 
-    private void saveResources(Resource Testressource1, Resource Testressource2, Resource Testressource3) {
-        resourceRepository.save(Testressource1);
-        resourceRepository.save(Testressource2);
-        resourceRepository.save(Testressource3);
+    private void initUserSavedResources() {
+
     }
 
+
+    // --------------------- Print ---------------------
 
     private void printCount(String message, String type, BaseService service) {
         int count = service.findAll().size();

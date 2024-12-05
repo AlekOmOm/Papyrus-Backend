@@ -5,6 +5,7 @@ import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
 import com.alek0m0m.papyrusbackend.user.User;
 import com.alek0m0m.papyrusbackend.user.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +21,25 @@ import java.util.List;
 public class FieldDTO extends BaseEntityDTO<Field> {
 
     private String name;
-    private UserDTO user;
     private List<ResourceDTO> resources = new ArrayList<>();
 
+
+    // ----------------- Constructors -----------------
+
+    public FieldDTO(Field input) {
+        this.setId(input.getId() != 0 ? input.getId() : 0L);
+        this.name = input.getName();
+        this.resources = input.getResources().stream()
+                .map(ResourceDTO::new).toList();
+    }
+    public FieldDTO(FieldDTOInput input) {
+        this.setId(input.getId() != null ? input.getId() : 0L);
+        this.name = input.getName();
+        this.resources = input.getResources().stream()
+                .map(ResourceDTO::new).toList();
+    }
+
+    // ----------------- Mapper logic  -----------------
     @Override
     public Field toEntity() {
         return new Field()
@@ -42,7 +59,6 @@ public class FieldDTO extends BaseEntityDTO<Field> {
         this.name = name;
         return this;
     }
-
 
     public FieldDTO setResources(List<ResourceDTO> resources) {
         this.resources = resources;

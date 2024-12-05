@@ -28,10 +28,10 @@ public class UserDTOInput {
     public UserDTOInput() {
         this.field = new FieldDTOInput()
                 .setName("root");
-
     }
 
-    // Getters and Setters (Lombok Getter, Setter returning UserDTOInput)
+
+    // ------------------ Setters ------------------
     public UserDTOInput setId(Long id) {
         this.id = id;
         return this;

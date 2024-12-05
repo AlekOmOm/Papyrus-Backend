@@ -6,6 +6,8 @@ import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.field.FieldDTO;
 import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Version;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -29,10 +31,41 @@ public class UserDTO extends BaseEntityDTO<User> {
     private List<ResourceDTO> savedResources = new ArrayList<>();
 
 
+    @Version
+    private int version;
+
+
+
+    // ----------------- Constructors -----------------
+    public UserDTO(User input) {
+        this.setId(input.getId() != 0 ? input.getId() : 0L);
+        this.name = input.getName();
+        this.email = input.getEmail();
+        this.password = input.getPassword();
+        this.role = input.getRole();
+        this.field = new FieldDTO(input.getField());
+        this.savedResources = input.getSavedResources().stream()
+                .map(ResourceDTO::new).toList();
+        this.version = input.getVersion();
+    }
+
+    public UserDTO(UserDTOInput input) {
+        this.setId(input.getId() != null ? input.getId() : 0L);
+        this.name = input.getName();
+        this.email = input.getEmail();
+        this.password = input.getPassword();
+        this.role = input.getRole();
+        this.field = new FieldDTO(input.getField());
+        this.savedResources = input.getSavedResources().stream()
+                .map(ResourceDTO::new).toList();
+
+    }
+
+    // ----------------- Mapper logic  -----------------
     @Override
     public User toEntity() {
-        return new User()
-                .setId(this.getId())
+        User user = new User()
+                .setId(this.getId() != 0 ? this.getId() : 0L)
                 .setName(this.getName())
                 .setEmail(this.getEmail())
                 .setPassword(this.getPassword())
@@ -40,7 +73,11 @@ public class UserDTO extends BaseEntityDTO<User> {
                 .setField(this.getField().toEntity())
                 .setSavedResources(this.getSavedResources().stream()
                         .map(ResourceDTO::toEntity).toList());
+        user.setVersion(this.version);
+        return user;
     }
+
+
 
     // ----------------- Business Operations -----------------
 
@@ -50,6 +87,7 @@ public class UserDTO extends BaseEntityDTO<User> {
 
 
     // ----------------- Getters and Setters -----------------
+
     public UserDTO setId(Long id) {
         super.setId(id);
         return this;

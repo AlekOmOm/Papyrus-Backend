@@ -20,22 +20,39 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
 
     @Override
     protected void resetIncrement() {
-        System.out.println("resource resetIncrement");
+        // ...
     }
 
 
     @Transactional
     public ResourceDTO save(ResourceDTO input) {
-
-        // filter added to prevent duplicate users
-        List<ResourceDTO> existingResources = findByNameAndAuthor(input.getName(), input.getAuthor());
-        if (!existingResources.isEmpty()) {
-            return existingResources.get(0);
+        if (input == null) {
+            return null;
         }
 
-        // if no duplicate users, save the user
         return super.save(input);
     }
+
+    @Transactional
+    // update
+    public ResourceDTO update(ResourceDTO input) {
+        if (input == null) {
+            return null;
+        }
+
+        ResourceDTO resourceDTO = find(input);
+
+        if (resourceDTO == null) {
+            getDtoMapper().map(new ResourceDTOInput(input),resourceDTO.toEntity());
+        }
+
+
+
+        return super.save(input);
+    }
+
+
+
 
 
     public List<ResourceDTO> findByNameAndAuthor(String name, String author) {
@@ -47,8 +64,12 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
                                 &&
                                 dto.getAuthor().equals(author))
                 .toList();
-
-
     }
 
+
+    public ResourceDTO find(ResourceDTO resourceDTO) {
+        List<ResourceDTO> list = findByNameAndAuthor(resourceDTO.getName(), resourceDTO.getAuthor());
+
+        return list.isEmpty() ? null : list.get(0);
+    }
 }

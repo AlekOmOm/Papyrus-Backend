@@ -21,7 +21,14 @@ public class ResourceDTOInput {
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private List<UserDTOInput> users = new ArrayList<>();
+
+    public ResourceDTOInput(ResourceDTO input) {
+        this.id = input.getId();
+        this.name = input.getName();
+        this.author = input.getAuthor();
+        this.fromDate = input.getFromDate();
+        this.toDate = input.getToDate();
+    }
 
     // setters return ResourceDTOInput
 
@@ -50,9 +57,5 @@ public class ResourceDTOInput {
         return this;
     }
 
-    public ResourceDTOInput setUsers(List<UserDTOInput> users) {
-        this.users = users;
-        return this;
-    }
 
 }

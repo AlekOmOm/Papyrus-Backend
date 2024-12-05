@@ -3,6 +3,7 @@ package com.alek0m0m.papyrusbackend.field;
 import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.resource.ResourceDTOInput;
 import com.alek0m0m.papyrusbackend.user.UserDTOInput;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class FieldDTOInput {
 
     private Long id;
     private String name;
+
     private List<ResourceDTOInput> resources;
 
     public FieldDTOInput () {
@@ -26,7 +28,7 @@ public class FieldDTOInput {
     }
 
 
-    // setters return ResourceDTOInput
+    // ------------------ Setters ------------------
     public FieldDTOInput setId(long id) {
         this.id = id;
         return this;

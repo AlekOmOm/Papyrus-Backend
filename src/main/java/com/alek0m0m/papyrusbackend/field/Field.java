@@ -3,6 +3,7 @@ package com.alek0m0m.papyrusbackend.field;
 import com.Alek0m0m.library.jpa.BaseEntity;
 import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Field extends BaseEntity {
     private List<Resource> resources = new ArrayList<>();
 
 
+    // ------------------ Setters ------------------
     public Field setId(long id) {
         this.id = id;
         return this;

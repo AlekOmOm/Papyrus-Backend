@@ -1,5 +1,6 @@
 package com.alek0m0m.papyrusbackend.user;
 
+import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.field.FieldDTO;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,12 +20,16 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
     private final ResourceService resourceService;
     private final FieldService fieldService;
+    private final UserRepository userRepository;
+    private final UserMapper mapper;
 
     @Autowired
-    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService) {
+    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService, UserRepository userRepository) {
         super(repository, mapper);
-        this.resourceService = resourceService;
+        this.mapper = mapper;
+        this.userRepository = userRepository;
         this.fieldService = fieldService;
+        this.resourceService = resourceService;
     }
 
     @Override
@@ -32,35 +38,37 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     }
 
 
-    @Transactional
-    public UserDTO save(UserDTO input) {
+    public UserDTO save(UserDTO entityDTO) {
 
-        if (input.getName() == null) {
-            return null;
+        UserDTO existingUser = findByNameAndEmail(entityDTO.getName(), entityDTO.getEmail()).stream().findFirst().orElse(null);
+
+        if (existingUser != null) {
+            existingUser = mapper.map(entityDTO, existingUser.toEntity());
         }
 
-        List<UserDTO> existingUsers = findByNameAndEmail(input.getName(), input.getEmail());
-        if (!existingUsers.isEmpty()) {
-            UserDTO existingUser = existingUsers.get(0);
-
-            input.setId(existingUser.getId());
-        }
-
-        //  sets field
-        FieldDTO managedField = fieldService.find(input.getName(), input.getField());
-        input.setField(managedField);
-
-        fieldService.save(input.getField());
-
-        //  sets saved resources
-        List<ResourceDTO> managedResources = input.getSavedResources().stream()
-                .map(resourceDTO -> resourceService.findById(resourceDTO.getId()))
-                .collect(Collectors.toList());
-        input.setSavedResources(managedResources);
-
-
-        return super.save(input);
+        return super.save(entityDTO);
     }
+
+    // ----------------- Main Business Operations -----------------
+
+    @Transactional
+    public void addUserResourceRelation(Long userId, Long resourceId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        ResourceDTO resource = resourceService.findById(resourceId);
+
+        user.getSavedResources().add(resource.toEntity());
+        userRepository.save(user);
+    }
+
+
+
+
+
+
+
+
+
+    // ----------------- CRUD -----------------
 
     public List<UserDTO> findByNameAndEmail(String name, String email) {
         List<UserDTO> repoUsers = findAll();
@@ -73,4 +81,11 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
                 .toList();
     }
 
+
+    // ----------------- Helper -----------------
+
+    // print @Version of User and Resource
+    public void printVersions(List<ResourceDTO> resources) {
+        resources.forEach(resourceDTO -> System.out.println("Resource " + resourceDTO.getName() + " has version " + resourceDTO.getVersion()));
+    }
 }
