@@ -70,7 +70,7 @@ public class InitData implements CommandLineRunner {
                         .setPassword("123")
                         .setRole("admin")
                         .setSavedResources(Arrays.stream(getResourcesInitData()).toList())
-                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[0], getResourcesInitData()[1], getResourcesInitData()[2])))),
+                        .setField(new FieldDTOInput(0L, "root", new ArrayList<>(List.of(getResourcesInitData()[3])))),
 
         };
     }
@@ -78,15 +78,29 @@ public class InitData implements CommandLineRunner {
     public static ResourceDTOInput[] getResourcesInitData() {
         return new ResourceDTOInput[]{
                 new ResourceDTOInput()
-                        .setId(0L)
-                        .setName("Ressource1"),
+                        .setId(1L)
+                        .setName("Metaphysics")
+                        .setAuthor("Aristotle")
+                        .setFromDate(LocalDate.of(350, 1, 1))
+                        .setToDate(LocalDate.of(350, 12, 31)),
                 new ResourceDTOInput()
-                        .setId(0L)
-                        .setName("Ressource2"),
+                        .setId(2L)
+                        .setName("The Republic")
+                        .setAuthor("Plato")
+                        .setFromDate(LocalDate.of(380, 1, 1))
+                        .setToDate(LocalDate.of(380, 12, 31)),
                 new ResourceDTOInput()
-                        .setId(0L)
-                        .setName("Ressource3"),
-
+                        .setId(3L)
+                        .setName("The Iliad")
+                        .setAuthor("Homer")
+                        .setFromDate(LocalDate.of(762, 1, 1))
+                        .setToDate(LocalDate.of(762, 12, 31)),
+                new ResourceDTOInput()
+                        .setId(4L)
+                        .setName("The Art of War")
+                        .setAuthor("Sun Tzu")
+                        .setFromDate(LocalDate.of(-500, 1, 1))
+                        .setToDate(LocalDate.of(-500, 12, 31)),
         };
     }
 
@@ -102,15 +116,21 @@ public class InitData implements CommandLineRunner {
     void initUsers() {
         printCount(" before", "user", userService);
 
-
         List<UserDTOInput> users = Arrays.stream(getUsersInitData()).toList();
 
+        System.out.println("Users to save:");
+            users.forEach(userDTOInput -> System.out.println(" - "+userDTOInput.getName()+", field and resources: "+userDTOInput.getField()+", "+userDTOInput.getSavedResources()));
 
         Arrays.stream(getUsersInitData())
                 .map(userMapper::convert)
                 .forEach(userService::save);
+
         printCount(" after", "user", userService);
     }
+
+
+
+
 
     // Makes fields one to one with user
     private void initFields(){

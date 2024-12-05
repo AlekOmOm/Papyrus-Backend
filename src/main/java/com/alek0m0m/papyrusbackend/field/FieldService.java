@@ -28,7 +28,7 @@ public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, Fi
     public FieldDTO save(FieldDTO input) {
 
         // filter added to prevent duplicate users
-        List<FieldDTO> existingResources = findBy(input.getName(), input.getUser().getName());
+        List<FieldDTO> existingResources = findBy(input.getUser().getName(),input.getName());
         if (!existingResources.isEmpty()) {
             return existingResources.get(0);
         }
@@ -37,16 +37,33 @@ public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, Fi
         return super.save(input);
     }
 
+    @Transactional
+    public FieldDTO find(String userName, FieldDTO field) {
 
-    public List<FieldDTO> findBy(String name, String userName) {
+        if (field == null) {
+            return null;
+        }
+
+        if (field.getId() != 0) {
+            return findById(field.getId());
+
+        }
+
+        if (field.getName() != null) {
+            return findBy(userName, field.getName()).get(0);
+        }
+
+        return null;
+    }
+
+    public List<FieldDTO> findBy(String userName, String fieldName) {
         List<FieldDTO> repoEntities = getDtoMapper().mapToDTOs(getRepository().findAll()).stream().toList();
 
         return repoEntities.stream()
                 .filter(dto ->
-                        dto.getName().equals(name)
+                        dto.getName().equals(fieldName)
                                 &&
                                 dto.getUser().getName().equals(userName))
                 .toList();
     }
-
 }

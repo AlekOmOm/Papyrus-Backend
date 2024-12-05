@@ -35,7 +35,7 @@ public class ResourceDTOInput {
         return this;
     }
 
-    public ResourceDTOInput setEmail(String author) {
+    public ResourceDTOInput setAuthor(String author) {
         this.author = author;
         return this;
     }
