@@ -50,7 +50,7 @@ public class UserDTO extends BaseEntityDTO<User> {
 
 
     // ----------------- Getters and Setters -----------------
-    public UserDTO setId(long id) {
+    public UserDTO setId(Long id) {
         super.setId(id);
         return this;
     }

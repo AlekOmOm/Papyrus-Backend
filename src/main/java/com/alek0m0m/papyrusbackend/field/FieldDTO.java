@@ -31,7 +31,9 @@ public class FieldDTO extends BaseEntityDTO<Field> {
                 .setResources(this.getResources().stream().map(ResourceDTO::toEntity).toList());
     }
 
-    public FieldDTO setId(long id) {
+
+    // ----------------- Setters -----------------
+    public FieldDTO setId(Long id) {
         super.setId(id);
         return this;
     }
