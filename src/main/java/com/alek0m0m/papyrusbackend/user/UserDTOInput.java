@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTOInput {
+public class UserDTOInput{
 
     private long id;
     private String name;

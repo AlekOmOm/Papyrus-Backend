@@ -3,7 +3,10 @@ package com.alek0m0m.papyrusbackend.user;
 
 
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
 import lombok.*;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,6 +19,8 @@ public class UserDTO extends BaseEntityDTO<User> {
     private String email;
     private String password;
     private String role;
+    @Getter
+    private List<ResourceDTO> resources;
 
     @Override
     public User toEntity() {
@@ -55,4 +60,6 @@ public class UserDTO extends BaseEntityDTO<User> {
         return this;
     }
 
-}
+    public List<ResourceDTO> getResources() {
+        return resources;
+    }}

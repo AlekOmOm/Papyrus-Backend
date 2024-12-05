@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin("*")
 public class UserController extends BaseRESTController<UserDTOInput, UserDTO, User, UserMapper, UserService, UserRepository> {
 
     @Autowired
@@ -26,6 +27,16 @@ public class UserController extends BaseRESTController<UserDTOInput, UserDTO, Us
                 updatedEntity.setId(id); // Ensure the ID is set correctly
         return ResponseEntity.ok(this.getService().save(updatedEntity));
     }
+
+    @GetMapping("/{id}/resources")
+    public ResponseEntity<Iterable<ResourceDTO>> getResources(@PathVariable("id") long id) {
+        UserDTO user = this.getService().findById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.getResources());
+    }
+
 }
 
 

@@ -58,4 +58,9 @@ public class User extends BaseEntity {
         return this;
     }
 
+    public User getResources(List<Resource> resources) {
+        this.resources = resources;
+        return this;
+    }
+
 }
