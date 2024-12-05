@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class UserController extends BaseRESTController<UserDTOInput, UserDTO, User, UserMapper, UserService, UserRepository> {
 
+    private final ResourceService resourceService;
+
     @Autowired
     public UserController(UserService service, ResourceService resourceService) {
         super(service);
+        this.resourceService = resourceService;
     }
 
     @PutMapping("/{id}")
@@ -26,6 +29,12 @@ public class UserController extends BaseRESTController<UserDTOInput, UserDTO, Us
         UserDTO updatedEntity = mapper.convert(dtoinput);
                 updatedEntity.setId(id); // Ensure the ID is set correctly
         return ResponseEntity.ok(this.getService().save(updatedEntity));
+    }
+
+    @PostMapping("/saveaspersonalresource")
+    public ResponseEntity<ResourceDTO> saveAsPersonalResource(@RequestParam Long resourceId, @RequestParam Long userId) {
+        ResourceDTO savedResource = resourceService.savePersonalResource(resourceId, userId);
+        return ResponseEntity.ok(savedResource);
     }
 
     @GetMapping("/{id}/resources")

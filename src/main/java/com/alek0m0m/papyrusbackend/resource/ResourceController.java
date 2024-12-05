@@ -17,11 +17,7 @@ public class ResourceController extends BaseRESTController<ResourceDTOInput, Res
         super(service);
     }
 
-    @PostMapping("/saveaspersonalresource")
-    public ResponseEntity<ResourceDTO> saveAsPersonalResource(@RequestParam Long resourceId, @RequestParam Long userId) {
-        ResourceDTO savedResource = service.savePersonalResource(resourceId, userId);
-        return ResponseEntity.ok(savedResource);
-    }
+
 
     /*
     @GetMapping("{id}")
