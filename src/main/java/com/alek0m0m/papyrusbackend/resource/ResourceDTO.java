@@ -65,4 +65,5 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         return this;
     }
 
+
 }
