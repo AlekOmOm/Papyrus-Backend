@@ -36,7 +36,7 @@ public class UserMapper extends EntityToDTOMapperImpl<UserDTOInput, UserDTO, Use
                                 ResourceDTO resourceDTO = new ResourceDTO();
                                 resourceDTO.setId(resource.getId());
                                 resourceDTO.setName(resource.getName());
-                                resourceDTO.setAuthor(resource.geAuthor());
+                                resourceDTO.setAuthor(resource.getAuthor());
                                 return resourceDTO;
                             })
                             .collect(Collectors.toList()));
