@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends BaseRepository<User> {
-
     @Modifying
     @Query(value = "ALTER TABLE papyrus.user AUTO_INCREMENT = 1", nativeQuery = true)
     void resetAutoIncrement();
