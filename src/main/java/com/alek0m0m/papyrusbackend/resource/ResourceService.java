@@ -64,8 +64,6 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
         return null;
     }
 
-
-
     public ResourceDTO findByNameAndAuthor(String name, String author) {
         List<ResourceDTO> repoUsers = findAll();
 

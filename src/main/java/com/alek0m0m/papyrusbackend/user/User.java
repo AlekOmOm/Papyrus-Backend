@@ -28,7 +28,6 @@ public class User extends BaseEntity {
     @JsonIgnore
     private Field field;
 
-
     @ManyToMany
     @JoinTable(
             name = "user_resource",
