@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -71,7 +72,7 @@ public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, Fi
         }
 
         if (field.getId() != 0) {
-            return findById(field.getId());
+            return findByIdWithResources(field.getId());
         }
 
         if (field.getName() != null) {
@@ -85,11 +86,22 @@ public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, Fi
     }
 
     public List<FieldDTO> findBy(String fieldName) {
-        List<FieldDTO> repoEntities = getDtoMapper().mapToDTOs(getRepository().findAll()).stream().toList();
+        List<FieldDTO> repoEntities = getDtoMapper().mapToDTOs(getRepository()
+                .findAll()).stream().toList();
+
+        repoEntities.stream().map(FieldDTO::getResources).forEach(List::size);
 
         return repoEntities.stream()
                 .filter(dto ->
                         dto.getName().equals(fieldName))
                 .toList();
+    }
+
+
+    @Transactional
+    public FieldDTO findByIdWithResources(Long id) {
+        FieldDTO field = findById(id);
+        field.getResources().size(); // Initialize the collection
+        return field;
     }
 }

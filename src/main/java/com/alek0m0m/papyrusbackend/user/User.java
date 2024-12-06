@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     private String password;
     private String role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private Field field;
 

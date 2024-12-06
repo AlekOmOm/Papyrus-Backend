@@ -5,10 +5,14 @@ package com.alek0m0m.papyrusbackend.user;
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.field.FieldDTO;
+import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTOInput;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Version;
 import lombok.*;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.repository.cdi.Eager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,9 @@ public class UserDTO extends BaseEntityDTO<User> {
 
     private FieldDTO field;
 
+    // EAGER fetch
+    @JsonIgnore
+    @Lazy
     private List<ResourceDTO> savedResources = new ArrayList<>();
 
 
@@ -38,27 +45,31 @@ public class UserDTO extends BaseEntityDTO<User> {
 
     // ----------------- Constructors -----------------
     public UserDTO(User input) {
+        if (input == null) { return; }
         this.setId(input.getId() != 0 ? input.getId() : 0L);
         this.name = input.getName();
         this.email = input.getEmail();
         this.password = input.getPassword();
         this.role = input.getRole();
         this.field = new FieldDTO(input.getField());
-        this.savedResources = input.getSavedResources().stream()
-                .map(ResourceDTO::new).toList();
-        this.version = input.getVersion();
+                List<Resource> res = input.getField().getResources();
+                res.size(); // initialize lazy collection
+                this.field.setResources(res.stream()
+                        .map(ResourceDTO::new).toList());
     }
 
     public UserDTO(UserDTOInput input) {
+        if (input == null) { return; }
         this.setId(input.getId() != null ? input.getId() : 0L);
         this.name = input.getName();
         this.email = input.getEmail();
         this.password = input.getPassword();
         this.role = input.getRole();
         this.field = new FieldDTO(input.getField());
-        this.savedResources = input.getSavedResources().stream()
-                .map(ResourceDTO::new).toList();
-
+            List<ResourceDTOInput> res = input.getField().getResources();
+            res.size(); // initialize lazy collection
+            this.field.setResources(res.stream()
+                    .map(ResourceDTO::new).toList());
     }
 
     // ----------------- Mapper logic  -----------------
@@ -70,10 +81,7 @@ public class UserDTO extends BaseEntityDTO<User> {
                 .setEmail(this.getEmail())
                 .setPassword(this.getPassword())
                 .setRole(this.getRole())
-                .setField(this.getField().toEntity())
-                .setSavedResources(this.getSavedResources().stream()
-                        .map(ResourceDTO::toEntity).toList());
-        user.setVersion(this.version);
+                .setField(this.getField().toEntity());
         return user;
     }
 

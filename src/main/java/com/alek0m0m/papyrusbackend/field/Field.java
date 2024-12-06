@@ -23,7 +23,7 @@ public class Field extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "field", cascade = CascadeType.ALL)
     private List<Resource> resources = new ArrayList<>();
 
 

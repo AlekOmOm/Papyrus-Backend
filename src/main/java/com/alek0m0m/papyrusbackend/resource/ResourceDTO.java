@@ -28,18 +28,17 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
 
     // ----------------- Constructors -----------------
 
-    public ResourceDTO(Resource entity) {
-        setId(entity.getId());
-        this.name = entity.getName();
-        this.author = entity.getAuthor();
-        this.fromDate = entity.getFromDate();
-        this.toDate = entity.getToDate();
-        this.users = entity.getUsers().stream()
-                .map(UserDTO::new).toList();
-        this.version = entity.getVersion();
+    public ResourceDTO(Resource input) {
+        if (input == null) { return; }
+        setId(input.getId());
+        this.name = input.getName();
+        this.author = input.getAuthor();
+        this.fromDate = input.getFromDate();
+        this.toDate = input.getToDate();
     }
 
     public ResourceDTO(ResourceDTOInput input) {
+        if (input == null) { return; }
         setId(input.getId());
         this.name = input.getName();
         this.author = input.getAuthor();
@@ -57,10 +56,7 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
                 .setName(this.getName())
                 .setAuthor(this.getAuthor())
                 .setFromDate(this.getFromDate())
-                .setToDate(this.getToDate())
-                .setUsers(this.getUsers().stream()
-                        .map(UserDTO::toEntity).toList());
-        res.setVersion(this.version);
+                .setToDate(this.getToDate());
         return res;
     }
 
