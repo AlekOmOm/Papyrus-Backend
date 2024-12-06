@@ -40,11 +40,13 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
 
     public UserDTO save(UserDTO entityDTO) {
+        if (entityDTO == null) {
+            return null;
+        }
 
         UserDTO existingUser = find(entityDTO);
 
         if (existingUser != null) {
-            System.out.println("User already exists: " + existingUser.getName());
             existingUser = mapper.map(entityDTO, existingUser.toEntity());
             return super.update(existingUser);
         }
@@ -104,7 +106,6 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
         }
 
         if (user.get().size() > 1) {
-            System.out.println("   More than one user found with name: " + name + " and email: " + email);
             return setField(user.get().get(0));
         }
 
@@ -123,8 +124,4 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
         return user.setField(field);
     }
 
-    // print @Version of User and Resource
-    public void printVersions(List<ResourceDTO> resources) {
-        resources.forEach(resourceDTO -> System.out.println("Resource " + resourceDTO.getName() + " has version " + resourceDTO.getVersion()));
-    }
 }

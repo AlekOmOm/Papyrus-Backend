@@ -23,9 +23,6 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
     private LocalDate toDate;
     private List<UserDTO> users = new ArrayList<>();
 
-    @Version
-    private int version;
-
     // ----------------- Constructors -----------------
 
     public ResourceDTO(Resource input) {

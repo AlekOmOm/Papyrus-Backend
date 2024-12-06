@@ -25,13 +25,8 @@ public class Resource extends BaseEntity {
     @ManyToMany(mappedBy = "savedResources", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<User> users;
 
-
     @ManyToOne
     private Field field;
-
-    @Version
-    private int version;
-
 
     // ------------------ Setters ------------------
     public Resource setId(long id) {

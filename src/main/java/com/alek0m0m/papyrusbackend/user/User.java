@@ -37,9 +37,6 @@ public class User extends BaseEntity {
     )
     private List<Resource> savedResources = new ArrayList<>();
 
-    @Version
-    private int version;
-
     public User () {
         this.field = new Field("root", new ArrayList<>());
     }
@@ -80,6 +77,5 @@ public class User extends BaseEntity {
         this.savedResources = savedResources;
         return this;
     }
-
 
 }
