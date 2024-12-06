@@ -23,8 +23,21 @@ public class FieldDTOInput {
 
     private List<ResourceDTOInput> resources;
 
+
+    // ------------------ Constructors ------------------
+
     public FieldDTOInput () {
         this.resources = new ArrayList<>();
+    }
+
+    public FieldDTOInput(FieldDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+
+        if (dto.getResources() != null) {
+            this.resources = dto.getResources().stream()
+                    .map(ResourceDTOInput::new).toList();
+        }
     }
 
 

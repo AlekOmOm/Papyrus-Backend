@@ -30,6 +30,25 @@ public class UserDTOInput{
                 .setName("root");
     }
 
+    public UserDTOInput(UserDTO userDTO) {
+        this.id = userDTO.getId();
+        this.name = userDTO.getName();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.role = userDTO.getRole();
+
+        if (userDTO.getField() != null) {
+            this.field = new FieldDTOInput(userDTO.getField());
+        }
+
+        if (userDTO.getSavedResources() != null) {
+            this.savedResources = userDTO.getSavedResources().stream()
+                    .map(ResourceDTOInput::new).toList();
+        }
+
+
+    }
+
 
     // ------------------ Setters ------------------
     public UserDTOInput setId(Long id) {

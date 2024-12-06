@@ -43,7 +43,7 @@ public class UserController extends BaseRESTController<UserDTOInput, UserDTO, Us
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user.getResources());
+        return ResponseEntity.ok(user.getSavedResources());
     }
 
 }

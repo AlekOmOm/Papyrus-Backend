@@ -158,6 +158,47 @@ public class InitData implements CommandLineRunner {
 
     private void initUserSavedResources() {
 
+        // Saving the Test users and ressources
+        printCount(" before", "user", userService);
+
+        List<UserDTO> usersRepo = userService.findAll();
+        List<ResourceDTO> resourcesRepo = resourceService.findAll();
+
+        for (UserDTO user : usersRepo) {
+            if (user.getId() == 0 && user.getId() == null) {
+                continue;
+            }
+
+            for (ResourceDTO resource : resourcesRepo) {
+                if (resource.getId() == 0 && resource.getId() == null) {
+                    continue;
+                }
+
+                userService.addUserResourceRelation(user.getId(), resource.getId());
+
+                printRelation(user, resource);
+            }
+
+        }
+
+        printCount(" after", "user", userService);
+
+    }
+
+    private void printRelation(UserDTO user, ResourceDTO resource) {
+        // given:
+        UserDTO userDTO = userService.findById(user.getId());
+        ResourceDTO resourceDTO = resourceService.findById(resource.getId());
+
+        // when:
+        for (ResourceDTO res : userDTO.getSavedResources()) {
+            if (res.getId() == resourceDTO.getId()) {
+                System.out.println("printRelation:");
+                System.out.println(" - relation confirmed, user: "+userDTO.getName()+" and resource: "+resourceDTO.getName()+" saved");
+                return;
+            }
+        }
+
     }
 
 

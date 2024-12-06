@@ -35,6 +35,10 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
+        if (input.getUsers() != null) {
+            this.users = input.getUsers().stream()
+                    .map(UserDTO::new).toList();
+        }
     }
 
     public ResourceDTO(ResourceDTOInput input) {
@@ -44,6 +48,12 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
+
+        if (input.getUsers() != null) {
+            this.users = input.getUsers().stream()
+                    .map(UserDTO::new).toList();
+        }
+
     }
 
 
