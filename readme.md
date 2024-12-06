@@ -6,7 +6,7 @@ Maven: Ensure Maven is installed and configured on your system.
 GitHub Personal Access Token (PAT): You’ll need a PAT with read:packages permission to access the library.
 
 
-## 1. Configure Maven to Authenticate with GitHub Packages
+## Configure Maven to Authenticate with GitHub Packages
 
 - You’ll need to configure Maven to authenticate with GitHub Packages using your PAT.
 
