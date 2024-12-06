@@ -19,12 +19,13 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Field extends BaseEntity {
+public class Field extends BaseEntity{
 
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "field", cascade = CascadeType.ALL)
     private List<Resource> resources = new ArrayList<>();
+
 
 
     // ------------------ Setters ------------------
