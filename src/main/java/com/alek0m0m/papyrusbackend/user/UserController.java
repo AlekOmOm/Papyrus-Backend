@@ -39,7 +39,11 @@ public class UserController extends BaseRESTController<UserDTOInput, UserDTO, Us
 
     @GetMapping("/{id}/resources")
     public ResponseEntity<Iterable<ResourceDTO>> getResources(@PathVariable("id") long id) {
-        UserDTO user = this.getService().findById(id);
+        System.out.println("id: "+id);
+        UserDTO user = service.findByIdWithFieldAndResources(id);
+
+        System.out.println("user: "+user.getSavedResources());
+
         if (user == null) {
             return ResponseEntity.notFound().build();
         }

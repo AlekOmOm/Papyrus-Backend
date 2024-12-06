@@ -3,6 +3,7 @@ package com.alek0m0m.papyrusbackend.resource;
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.alek0m0m.papyrusbackend.user.UserDTO;
 import com.alek0m0m.papyrusbackend.user.User;
+import com.alek0m0m.papyrusbackend.user.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private List<UserDTO> users = new ArrayList<>();
+
 
     // ----------------- Constructors -----------------
 
@@ -35,10 +36,6 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
-        if (input.getUsers() != null) {
-            this.users = input.getUsers().stream()
-                    .map(UserDTO::new).toList();
-        }
     }
 
     public ResourceDTO(ResourceDTOInput input) {
@@ -48,11 +45,6 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
-
-        if (input.getUsers() != null) {
-            this.users = input.getUsers().stream()
-                    .map(UserDTO::new).toList();
-        }
 
     }
 
@@ -98,9 +90,5 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         return this;
     }
 
-    public ResourceDTO setUsers(List<UserDTO> users) {
-        this.users = users;
-        return this;
-    }
 
 }

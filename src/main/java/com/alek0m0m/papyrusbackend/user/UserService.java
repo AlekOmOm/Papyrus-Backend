@@ -5,7 +5,9 @@ import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.field.FieldDTO;
 import com.alek0m0m.papyrusbackend.field.FieldService;
+import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
+import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
 import com.alek0m0m.papyrusbackend.resource.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,16 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     private final FieldService fieldService;
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final ResourceRepository resourceRepository;
 
     @Autowired
-    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService, UserRepository userRepository) {
+    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService, UserRepository userRepository, ResourceRepository resourceRepository) {
         super(repository, mapper);
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.fieldService = fieldService;
         this.resourceService = resourceService;
+        this.resourceRepository = resourceRepository;
     }
 
     @Override
@@ -60,9 +64,9 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     public void addUserResourceRelation(Long userId, Long resourceId) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        ResourceDTO resource = resourceService.findById(resourceId);
+        Optional<Resource> resource = resourceRepository.findById(resourceId);
 
-        user.getSavedResources().add(resource.toEntity());
+        user.getSavedResources().add(resource.get());
         userRepository.save(user);
     }
 
@@ -86,9 +90,23 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
     @Transactional
     public UserDTO findByIdWithFieldAndResources(Long userId) {
-        UserDTO user = findById(userId);
+        Optional<User> user = userRepository.findById(userId);
 
-        return setField(user);
+        if (user == null) {
+            return null;
+        }
+
+        System.out.println("findByIdWithFieldAndResources: "+user.get().getSavedResources().size());
+
+
+        UserDTO dtoClean = new UserDTO(user.get());
+        System.out.println("findByIdWithFieldAndResources: "+dtoClean.getSavedResources().size());
+
+        UserDTO dto = setField(new UserDTO(user.get()));
+
+        System.out.println("findByIdWithFieldAndResources: "+dto.getSavedResources().size());
+
+        return new UserDTO(user.get());
     }
 
     public UserDTO findByNameAndEmail(String name, String email) {

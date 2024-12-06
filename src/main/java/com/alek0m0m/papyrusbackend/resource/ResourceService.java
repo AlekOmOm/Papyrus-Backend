@@ -95,12 +95,16 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
         return list.get().get(0);
     }
 
+    // ----------------- Business Operations -----------------
 
 
     @Transactional
     public ResourceDTO savePersonalResource(Long resourceId, Long userId) {
         Resource resource = repository.findById(resourceId).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        System.out.println("resource: "+resource);
+        System.out.println("user: "+user);
 
         resource.getUsers().add(user);
         user.getSavedResources().add(resource);

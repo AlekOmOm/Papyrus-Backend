@@ -32,14 +32,9 @@ public class UserDTO extends BaseEntityDTO<User> {
 
     private FieldDTO field;
 
-    // EAGER fetch
+
     @JsonIgnore
-    @Lazy
     private List<ResourceDTO> savedResources = new ArrayList<>();
-
-
-    @Version
-    private int version;
 
 
 
@@ -56,6 +51,8 @@ public class UserDTO extends BaseEntityDTO<User> {
                 res.size(); // initialize lazy collection
                 this.field.setResources(res.stream()
                         .map(ResourceDTO::new).toList());
+        this.savedResources = input.getSavedResources().stream()
+                .map(ResourceDTO::new).toList();
     }
 
     public UserDTO(UserDTOInput input) {
@@ -70,6 +67,8 @@ public class UserDTO extends BaseEntityDTO<User> {
             res.size(); // initialize lazy collection
             this.field.setResources(res.stream()
                     .map(ResourceDTO::new).toList());
+        this.savedResources = input.getSavedResources().stream()
+                .map(ResourceDTO::new).toList();
     }
 
     // ----------------- Mapper logic  -----------------
@@ -81,7 +80,9 @@ public class UserDTO extends BaseEntityDTO<User> {
                 .setEmail(this.getEmail())
                 .setPassword(this.getPassword())
                 .setRole(this.getRole())
-                .setField(this.getField().toEntity());
+                .setField(this.getField().toEntity())
+                .setSavedResources(this.getSavedResources().stream()
+                        .map(ResourceDTO::toEntity).toList());
         return user;
     }
 

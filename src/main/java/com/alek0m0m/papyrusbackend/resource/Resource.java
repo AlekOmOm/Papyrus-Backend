@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Resource extends BaseEntity {
@@ -22,7 +22,7 @@ public class Resource extends BaseEntity {
     private LocalDate fromDate;
     private LocalDate toDate;
 
-    @ManyToMany(mappedBy = "savedResources", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "savedResources")
     private List<User> users;
 
     @ManyToOne
@@ -63,4 +63,17 @@ public class Resource extends BaseEntity {
         this.field = field;
         return this;
     }
+
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", field=" + field +
+                '}';
+    }
+
 }
