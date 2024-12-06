@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,18 +22,18 @@ public class Resource extends BaseEntity {
     private LocalDate fromDate;
     private LocalDate toDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_ressource",
-            joinColumns = @JoinColumn(name = "ressource_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> users = new ArrayList<>();
+    @ManyToMany(mappedBy = "savedResources", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<User> users;
+
 
     @ManyToOne
-    @JoinColumn(name="field_id")
     private Field field;
 
+    @Version
+    private int version;
+
+
+    // ------------------ Setters ------------------
     public Resource setId(long id) {
         this.id = id;
         return this;

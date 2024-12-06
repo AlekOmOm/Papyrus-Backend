@@ -4,10 +4,7 @@ import com.Alek0m0m.library.jpa.*;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -16,6 +13,7 @@ import java.util.Optional;
 
 @Entity
 @Getter
+@Setter
 @ToString
 
 @AllArgsConstructor
@@ -26,13 +24,21 @@ public class User extends BaseEntity {
     private String password;
     private String role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private Field field;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    @JsonIgnore
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_resource",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "resource_id")
+    )
     private List<Resource> savedResources = new ArrayList<>();
+
+    @Version
+    private int version;
 
     public User () {
         this.field = new Field("root", new ArrayList<>());
