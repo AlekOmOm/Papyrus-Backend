@@ -1,54 +1,127 @@
 package com.alek0m0m.papyrusbackend.user;
 
+import com.Alek0m0m.library.jpa.BaseEntityDTO;
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
+import com.alek0m0m.papyrusbackend.field.Field;
+import com.alek0m0m.papyrusbackend.field.FieldDTO;
+import com.alek0m0m.papyrusbackend.field.FieldService;
+import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
+import com.alek0m0m.papyrusbackend.resource.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMapper, UserRepository> {
 
+    private final ResourceService resourceService;
+    private final FieldService fieldService;
+    private final UserRepository userRepository;
+    private final UserMapper mapper;
+
     @Autowired
-    public UserService(UserRepository repository, UserMapper mapper) {
+    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService, UserRepository userRepository) {
         super(repository, mapper);
+        this.mapper = mapper;
+        this.userRepository = userRepository;
+        this.fieldService = fieldService;
+        this.resourceService = resourceService;
     }
 
     @Override
     protected void resetIncrement() {
-        getRepository().resetAutoIncrement();
+        //getRepository().resetAutoIncrement();
     }
 
 
-    @Transactional
-    public UserDTO save(UserDTO input) {
-        resetIncrement();
-
-        System.out.println("UserService increment called");
-
-        // filter added to prevent duplicate users
-        List<UserDTO> existingUsers = findByNameAndEmail(input.getName(), input.getEmail());
-        if (!existingUsers.isEmpty()) {
-            return existingUsers.get(0);
+    public UserDTO save(UserDTO entityDTO) {
+        if (entityDTO == null) {
+            return null;
         }
 
-        // if no duplicate users, save the user
-        return super.save(input);
+        UserDTO existingUser = find(entityDTO);
+
+        if (existingUser != null) {
+            existingUser = mapper.map(entityDTO, existingUser.toEntity());
+            return super.update(existingUser);
+        }
+
+        return super.save(entityDTO);
+    }
+
+    // ----------------- Main Business Operations -----------------
+
+    @Transactional
+    public void addUserResourceRelation(Long userId, Long resourceId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        ResourceDTO resource = resourceService.findById(resourceId);
+
+        user.getSavedResources().add(resource.toEntity());
+        userRepository.save(user);
     }
 
 
-    public List<UserDTO> findByNameAndEmail(String name, String email) {
-        List<UserDTO> repoUsers = getDtoMapper().mapToDTOs(getRepository().findAll()).stream().toList();
 
-        return repoUsers.stream()
+
+    // ----------------- CRUD -----------------
+
+    public UserDTO find(UserDTO userDTO) {
+        if (userDTO.getId() != null && userDTO.getId() != 0) {
+            System.out.println("userDTO.getId() != null: "+userDTO.getId());
+            return findByIdWithFieldAndResources(userDTO.getId());
+        }
+
+        if (userDTO.getName() != null && userDTO.getEmail() != null) {
+            return findByNameAndEmail(userDTO.getName(), userDTO.getEmail());
+        }
+
+        return null;
+    }
+
+    @Transactional
+    public UserDTO findByIdWithFieldAndResources(Long userId) {
+        UserDTO user = findById(userId);
+
+        return setField(user);
+    }
+
+    public UserDTO findByNameAndEmail(String name, String email) {
+        List<UserDTO> repoUsers = findAll();
+
+        Optional<List<UserDTO>> user = Optional.ofNullable(repoUsers.stream()
                 .filter(userDTO ->
                         userDTO.getName().equals(name)
                                 &&
                                 userDTO.getEmail().equals(email))
-                .toList();
+                .toList());
+
+        if (user.isEmpty()) {
+            return null;
+        }
+
+        if (user.get().size() > 1) {
+            return setField(user.get().get(0));
+        }
+
+        if (user.get().size() == 0) {
+            return null;
+        }
+
+        return setField(user.get().get(0));
+    }
 
 
+    // ----------------- Helper -----------------
+
+    private UserDTO setField(UserDTO user) {
+        FieldDTO field = fieldService.find(user.getField());
+        return user.setField(field);
     }
 
 }

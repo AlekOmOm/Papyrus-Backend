@@ -4,12 +4,10 @@ import com.Alek0m0m.library.spring.web.mvc.BaseRESTController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/resources")
-@CrossOrigin("*")
 public class ResourceController extends BaseRESTController<ResourceDTOInput, ResourceDTO, Resource, ResourceMapper, ResourceService, ResourceRepository> {
 
     @Autowired

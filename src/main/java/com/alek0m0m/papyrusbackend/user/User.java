@@ -1,19 +1,21 @@
 package com.alek0m0m.papyrusbackend.user;
 
 import com.Alek0m0m.library.jpa.*;
+import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
+@Setter
 @ToString
-@NoArgsConstructor
+
 @AllArgsConstructor
 public class User extends BaseEntity {
 
@@ -22,9 +24,21 @@ public class User extends BaseEntity {
     private String password;
     private String role;
 
-    @ManyToMany(mappedBy = "users")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Resource> resources = new ArrayList<>();
+    private Field field;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_resource",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "resource_id")
+    )
+    private List<Resource> savedResources = new ArrayList<>();
+
+    public User () {
+        this.field = new Field("root", new ArrayList<>());
+    }
 
 
     // Setters (returning User)
@@ -53,13 +67,13 @@ public class User extends BaseEntity {
         return this;
     }
 
-    public User setResources(List<Resource> resources) {
-        this.resources = resources;
+    public User setField(Field field) {
+        this.field = field;
         return this;
     }
 
-    public User getResources(List<Resource> resources) {
-        this.resources = resources;
+    public User setSavedResources(List<Resource> savedResources) {
+        this.savedResources = savedResources;
         return this;
     }
 
