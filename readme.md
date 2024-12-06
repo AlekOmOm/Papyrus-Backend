@@ -1,5 +1,5 @@
 
-# using AlekOmOm package 
+# using library dependency
 
 ## Prerequisites
 Maven: Ensure Maven is installed and configured on your system.
