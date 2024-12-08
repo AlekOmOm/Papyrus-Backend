@@ -21,7 +21,7 @@ class UserMapperTest {
 
 
     @InjectMocks
-    private UserMapper userMapper = new UserMapper(new FieldMapper(new ResourceMapper()));
+    private UserMapper userMapper = new UserMapper();
 
 
 
