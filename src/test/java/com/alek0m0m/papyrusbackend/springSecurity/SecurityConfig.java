@@ -9,7 +9,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Configuration public class ProjectSecurityConfig {
 
         @Bean
         // Bean Makes this method as a prouction method that will be callen by spring
@@ -33,7 +32,6 @@ public class SecurityConfig {
             // Builds and returns the SecurityFilterChain
             return http.build(); }
 
+
     }
 
-
-}
