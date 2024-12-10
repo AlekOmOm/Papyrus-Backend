@@ -1,17 +1,21 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
+import com.alek0m0m.papyrusbackend.user.UserDTO;
 import com.alek0m0m.papyrusbackend.user.User;
+import com.alek0m0m.papyrusbackend.user.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,21 +25,47 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private List<User> users = new ArrayList<>();
 
 
+    // ----------------- Constructors -----------------
+
+    public ResourceDTO(Resource input) {
+        if (input == null) { return; }
+        setId(input.getId());
+        this.name = input.getName();
+        this.author = input.getAuthor();
+        this.fromDate = input.getFromDate();
+        this.toDate = input.getToDate();
+    }
+
+    public ResourceDTO(ResourceDTOInput input) {
+        if (input == null) { return; }
+        setId(input.getId());
+        this.name = input.getName();
+        this.author = input.getAuthor();
+        this.fromDate = input.getFromDate();
+        this.toDate = input.getToDate();
+
+    }
+
+
+
+    // ----------------- Mapper Logic -----------------
     @Override
     public Resource toEntity() {
-        return new Resource()
-                .setId(this.getId())
+        Resource res = new Resource()
+                .setId(this.getId() != null ? this.getId() : 0L)
                 .setName(this.getName())
                 .setAuthor(this.getAuthor())
                 .setFromDate(this.getFromDate())
-                .setToDate(this.getToDate())
-                .setUsers(this.getUsers());
+                .setToDate(this.getToDate());
+        return res;
     }
 
-    public ResourceDTO setId(long id) {
+
+
+    // ----------------- Setters -----------------
+    public ResourceDTO setId(Long id) {
         super.setId(id);
         return this;
     }
@@ -60,9 +90,5 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         return this;
     }
 
-    public ResourceDTO setUsers(List<User> users) {
-        this.users = users;
-        return this;
-    }
 
 }

@@ -1,10 +1,8 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 import com.Alek0m0m.library.jpa.BaseEntity;
+import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,7 +11,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@ToString
+@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Resource extends BaseEntity {
@@ -23,21 +22,13 @@ public class Resource extends BaseEntity {
     private LocalDate fromDate;
     private LocalDate toDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_ressource",
-            joinColumns = @JoinColumn(name = "ressource_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> users = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "savedResources")
+    private List<User> users;
 
-    public Resource(String name, String author, LocalDate fromDate, LocalDate toDate) {
-        this.name = name;
-        this.author = author;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-    }
+    @ManyToOne
+    private Field field;
 
+    // ------------------ Setters ------------------
     public Resource setId(long id) {
         this.id = id;
         return this;
@@ -67,4 +58,22 @@ public class Resource extends BaseEntity {
         this.users = users;
         return this;
     }
+
+    public Resource setField(Field field) {
+        this.field = field;
+        return this;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", fromDate=" + fromDate +
+                ", toDate=" + toDate +
+                ", field=" + field +
+                '}';
+    }
+
 }

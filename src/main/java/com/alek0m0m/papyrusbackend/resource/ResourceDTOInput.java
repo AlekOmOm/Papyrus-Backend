@@ -1,7 +1,7 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
-import com.alek0m0m.papyrusbackend.user.User;
 import com.alek0m0m.papyrusbackend.user.UserDTOInput;
+import com.alek0m0m.papyrusbackend.user.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,11 +22,19 @@ public class ResourceDTOInput {
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private List<UserDTOInput> users = new ArrayList<>();
+
+
+    public ResourceDTOInput(ResourceDTO input) {
+        this.id = input.getId();
+        this.name = input.getName();
+        this.author = input.getAuthor();
+        this.fromDate = input.getFromDate();
+        this.toDate = input.getToDate();
+    }
 
     // setters return ResourceDTOInput
 
-    public ResourceDTOInput setId(long id) {
+    public ResourceDTOInput setId(Long id) {
         this.id = id;
         return this;
     }
@@ -36,7 +44,7 @@ public class ResourceDTOInput {
         return this;
     }
 
-    public ResourceDTOInput setEmail(String author) {
+    public ResourceDTOInput setAuthor(String author) {
         this.author = author;
         return this;
     }
@@ -51,9 +59,5 @@ public class ResourceDTOInput {
         return this;
     }
 
-    public ResourceDTOInput setUsers(List<UserDTOInput> users) {
-        this.users = users;
-        return this;
-    }
 
 }

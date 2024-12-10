@@ -1,8 +1,6 @@
-package com.alek0m0m.papyrusbackend.ressource;
+package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
