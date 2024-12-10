@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ResourceRepository extends BaseRepository<Resource> {
 
+    Resource findByNameAndRefId(String name, String refId);
+
 
 
 }
