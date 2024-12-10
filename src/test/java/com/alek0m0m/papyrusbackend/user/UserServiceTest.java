@@ -41,7 +41,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userMapper = new UserMapper();
+        userMapper = new UserMapper(null);
         userService = new UserService(userRepository, userMapper, null, null, null, null);
     }
 
