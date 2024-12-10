@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,21 +44,34 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
         //getRepository().resetAutoIncrement();
     }
 
-
-    public UserDTO save(UserDTO entityDTO) {
-        if (entityDTO == null) {
+    public UserDTO save(UserDTO dto) {
+        if (dto == null) {
             return null;
         }
 
-        UserDTO existingUser = find(entityDTO);
+        printUserSavedResources(dto);
+
+        UserDTO existingUser = find(dto);
 
         if (existingUser != null) {
-            existingUser = mapper.map(entityDTO, existingUser.toEntity());
-            return super.update(existingUser);
+            dto = mapper.map(dto, existingUser.toEntity());
         }
 
-        return super.save(entityDTO);
+        setChildren(dto, existingUser);
+        return super.save(dto);
     }
+
+    private void printUserSavedResources(UserDTO dto) {
+        List<String> uniqueNames = dto.getSavedResources().stream()
+                .map(ResourceDTO::getName)
+                .distinct()
+                .collect(Collectors.toList());
+
+        for (ResourceDTO resource : dto.getSavedResources()) {
+            System.out.println(resource.getName());
+        }
+    }
+
 
     // ----------------- Main Business Operations -----------------
 
@@ -64,14 +79,21 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     public void addUserResourceRelation(Long userId, Long resourceId) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Optional<Resource> resource = resourceRepository.findById(resourceId);
+        Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new IllegalArgumentException("Resource not found"));
 
-        user.getSavedResources().add(resource.get());
-        userRepository.save(user);
+        boolean relationExists = user.getSavedResources().stream()
+                .anyMatch(savedResource
+                        -> savedResource.getName().equals(resource.getName())
+                        && savedResource.getAuthor().equals(resource.getAuthor()) //TODO: validate check attributes: name and author
+                );
+
+        if (relationExists) {
+            return;
+        }
+
+        user.getSavedResources().add(resource);
+        userRepository.saveAndFlush(user);
     }
-
-
-
 
     // ----------------- CRUD -----------------
 
@@ -96,15 +118,9 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
             return null;
         }
 
-        System.out.println("findByIdWithFieldAndResources: "+user.get().getSavedResources().size());
-
-
         UserDTO dtoClean = new UserDTO(user.get());
-        System.out.println("findByIdWithFieldAndResources: "+dtoClean.getSavedResources().size());
 
         UserDTO dto = setField(new UserDTO(user.get()));
-
-        System.out.println("findByIdWithFieldAndResources: "+dto.getSavedResources().size());
 
         return new UserDTO(user.get());
     }
@@ -140,6 +156,20 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     private UserDTO setField(UserDTO user) {
         FieldDTO field = fieldService.find(user.getField());
         return user.setField(field);
+    }
+
+    private void setChildren(UserDTO dto, UserDTO existingUser) {
+        if (existingUser == null) {
+            return;
+        }
+        dto.setField(fieldService.save(existingUser.getField()));
+
+        List<ResourceDTO> res = existingUser.getSavedResources().stream()
+                .distinct() // remove duplicates
+                .collect(Collectors.toList());
+
+        dto.setSavedResources(resourceService.save(res)
+        );
     }
 
 }

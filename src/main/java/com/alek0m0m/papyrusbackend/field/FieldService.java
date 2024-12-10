@@ -27,7 +27,7 @@ public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, Fi
 
     @Override
     protected void resetIncrement() {
-        System.out.println("field resetIncrement");
+        // System.out.println("field resetIncrement");
     }
 
     @Transactional
@@ -51,13 +51,9 @@ public class FieldService extends BaseService<FieldDTOInput, FieldDTO, Field, Fi
     }
 
     private void saveAndSetResources(FieldDTO input, FieldDTO foundField) {
-        System.out.println("saveAndSetResources");
         foundField.setResources(input.getResources().stream()
                 .map(resourceDto -> {
-                    System.out.println("savedResource: " + resourceDto);
                     ResourceDTO savedResource = resourceDto;
-                    System.out.println("savedResource: " + savedResource);
-                    System.out.println();
                     return savedResource;
                 })
                 .collect(Collectors.toList()));

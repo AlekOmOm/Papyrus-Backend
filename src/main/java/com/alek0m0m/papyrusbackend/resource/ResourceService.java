@@ -57,14 +57,11 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
 
     public ResourceDTO find(ResourceDTO dto) {
         if (dto.getId() != null && dto.getId() != 0) {
-            System.out.println("userDTO.getId() != null: "+dto.getId());
             return findById(dto.getId());
         }
 
-        // name and author != null
         if (dto.getName() != null || dto.getAuthor() != null) {
             return findByNameAndAuthor(dto.getName(), dto.getAuthor());
-
         }
 
         return null;
@@ -114,6 +111,13 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
 
         return mapper.convert(resource);
     }
+
+    public List<ResourceDTO> save(List<ResourceDTO> savedResources) {
+        return savedResources.stream()
+                .map(this::save)
+                .toList();
+    }
+
 
     // ----------------- Helper -----------------
 

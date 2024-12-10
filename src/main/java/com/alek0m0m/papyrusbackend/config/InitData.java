@@ -159,7 +159,7 @@ public class InitData implements CommandLineRunner {
     private void initUserSavedResources() {
 
         // Saving the Test users and ressources
-        printCount(" before", "user", userService);
+        printCount(" before", "user_resource", userService);
 
         List<UserDTO> usersRepo = userService.findAll();
         List<ResourceDTO> resourcesRepo = resourceService.findAll();
@@ -174,15 +174,16 @@ public class InitData implements CommandLineRunner {
                     continue;
                 }
 
-                userService.addUserResourceRelation(user.getId(), resource.getId());
+                user.getSavedResources().stream().filter(resourceDTO ->
+                        resourceDTO.getName().equals(resource.getName()));
 
-                printRelation(user, resource);
+
+                userService.addUserResourceRelation(user.getId(), resource.getId());
             }
 
         }
 
-        printCount(" after", "user", userService);
-
+        printCount(" after", "user_resource", userService);
     }
 
     private void printRelation(UserDTO user, ResourceDTO resource) {
