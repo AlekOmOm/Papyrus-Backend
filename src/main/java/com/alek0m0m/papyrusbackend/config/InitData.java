@@ -78,24 +78,28 @@ public class InitData implements CommandLineRunner {
         return new ResourceDTOInput[]{
                 new ResourceDTOInput()
                         .setName("Metaphysics")
+                        .setRef_id("asd1")
                         .setAuthor("Aristotle")
                         .setFromDate(LocalDate.of(350, 1, 1))
                         .setToDate(LocalDate.of(350, 12, 31)),
                 new ResourceDTOInput()
 
                         .setName("The Republic")
+                        .setRef_id("asd2")
                         .setAuthor("Plato")
                         .setFromDate(LocalDate.of(380, 1, 1))
                         .setToDate(LocalDate.of(380, 12, 31)),
                 new ResourceDTOInput()
 
                         .setName("The Iliad")
+                        .setRef_id("asd3")
                         .setAuthor("Homer")
                         .setFromDate(LocalDate.of(762, 1, 1))
                         .setToDate(LocalDate.of(762, 12, 31)),
                 new ResourceDTOInput()
 
                         .setName("The Art of War")
+                        .setRef_id("asd4")
                         .setAuthor("Sun Tzu")
                         .setFromDate(LocalDate.of(-500, 1, 1))
                         .setToDate(LocalDate.of(-500, 12, 31)),

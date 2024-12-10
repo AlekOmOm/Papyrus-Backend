@@ -81,11 +81,7 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
         Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new IllegalArgumentException("Resource not found"));
 
-        boolean relationExists = user.getSavedResources().stream()
-                .anyMatch(savedResource
-                        -> savedResource.getName().equals(resource.getName())
-                        && savedResource.getAuthor().equals(resource.getAuthor()) //TODO: validate check attributes: name and author
-                );
+        boolean relationExists = isRelationExists(user, resource);
 
         if (relationExists) {
             return;
@@ -93,6 +89,14 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
         user.getSavedResources().add(resource);
         userRepository.saveAndFlush(user);
+    }
+
+    private static boolean isRelationExists(User user, Resource resource) {
+        return user.getSavedResources().stream()
+                .anyMatch(savedResource
+                        -> savedResource.getName().equals(resource.getName())
+                        && savedResource.getRefId().equals(resource.getRefId())
+                );
     }
 
     // ----------------- CRUD -----------------
