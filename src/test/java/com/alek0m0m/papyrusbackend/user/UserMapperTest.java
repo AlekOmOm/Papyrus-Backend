@@ -188,32 +188,68 @@ class UserMapperTest {
     }
 
     @Test
-    void testMap() {
+    void testMapUpdateEntity() {
         // given
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("John Doe");
-        userDTO.setEmail("john.doe@example.com");
-        userDTO.setPassword("password");
-        userDTO.setRole("USER");
+        UserDTO newDTO = new UserDTO();
+        newDTO.setName("John Doe");
+        newDTO.setEmail("john.doe@example.com");
+        newDTO.setPassword("password");
+        newDTO.setRole("USER");
 
-        User user = new User();
-        user.setName("Jane Doe");
-        user.setEmail("jane.doe@example.com");
-        user.setPassword("password123");
-        user.setRole("ADMIN");
+        User oldEntity = new User();
+        oldEntity.setName("John Doe");
+        oldEntity.setEmail("jane.doe@example.com");
+        oldEntity.setPassword("password123");
+        oldEntity.setRole("ADMIN");
 
-        printTest("Starting testMap: Mapping UserDTO and User to updated UserDTO", " - UserDTO: " + userDTO, " - User: " + user);
+        printTest("Starting testMap: Mapping UserDTO and User to updated UserDTO", " - UserDTO: " + newDTO, " - User: " + oldEntity);
 
         // when
-        UserDTO updatedUserDTO = userMapper.map(userDTO, user);
+        UserDTO updatedEntity = userMapper.map(newDTO, oldEntity);
+            // updatedUserDTO should be: email {john.doe@example.com}, password {password}, role {USER}
 
         // then
-        assertNotNull(updatedUserDTO, "The updated UserDTO should not be null");
-        assertEquals(user.getName(), updatedUserDTO.getName(), "The name should match");
-        assertEquals(user.getEmail(), updatedUserDTO.getEmail(), "The email should match");
-        assertEquals(user.getPassword(), updatedUserDTO.getPassword(), "The password should match");
-        assertEquals(user.getRole(), updatedUserDTO.getRole(), "The role should match");
+        assertNotNull(updatedEntity, "The updated UserDTO should not be null");
+        assertEquals(newDTO.getName(), updatedEntity.getName(), "The name should match");
+        assertEquals(newDTO.getEmail(), updatedEntity.getEmail(), "The email should match");
+        assertEquals(newDTO.getPassword(), updatedEntity.getPassword(), "The password should match");
+        assertEquals(newDTO.getRole(), updatedEntity.getRole(), "The role should match");
 
-        printTest("testMap passed: UserDTO and User successfully mapped to updated UserDTO", " - UserDTO: " + userDTO, " - User: " + user);
+        assertNotEquals(oldEntity.getEmail(), updatedEntity.getEmail(), "The email should be updated, and not match");
+
+        printTest("testMap passed: UserDTO and User successfully mapped to updated UserDTO", " - UserDTO: " + newDTO, " - User: " + oldEntity);
+    }
+
+    @Test
+    void testMapUpdateEntity_Not() {
+        // given
+        UserDTO newDTO = new UserDTO();
+        newDTO.setName("John Doe");
+        newDTO.setEmail("john.doe@example.com");
+        newDTO.setPassword("password");
+        newDTO.setRole("USER");
+
+        User oldEntity = new User();
+        oldEntity.setName("John Doe");
+        oldEntity.setEmail("jane.doe@example.com");
+        oldEntity.setPassword("password123");
+        oldEntity.setRole("ADMIN");
+
+        printTest("Starting testMap: Mapping UserDTO and User to updated UserDTO", " - UserDTO: " + newDTO, " - User: " + oldEntity);
+
+        // when
+        UserDTO updatedEntity = userMapper.map(newDTO, oldEntity);
+            // updatedUserDTO should be: email {john.doe@example.com}, password {password}, role {USER}
+
+        // then
+        assertNotNull(updatedEntity, "The updated UserDTO should not be null");
+        assertEquals(newDTO.getName(), updatedEntity.getName(), "The name should match");
+        assertEquals(newDTO.getEmail(), updatedEntity.getEmail(), "The email should match");
+        assertEquals(newDTO.getPassword(), updatedEntity.getPassword(), "The password should match");
+        assertEquals(newDTO.getRole(), updatedEntity.getRole(), "The role should match");
+
+        assertNotEquals(oldEntity.getEmail(), updatedEntity.getEmail(), "The email should be updated, and not match");
+
+        printTest("testMap passed: UserDTO and User successfully mapped to updated UserDTO", " - UserDTO: " + newDTO, " - User: " + oldEntity);
     }
 }
