@@ -11,11 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-// This class is responsible for configuring the security of the application.
-// it difines beans for the security filter chain and the password encoder.
-
-
-
 @Configuration
 public class SecurityConfig {
 
@@ -24,7 +19,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/accounthandler/login", "/api/accounthandler/register").permitAll() // Public endpoints
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/users/saveaspersonalresource").hasRole("user") // Only users with role "user" can access this endpoint
+                        .anyRequest().authenticated() // All other requests require authentication
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(form -> form
