@@ -54,7 +54,8 @@ public class LoginController {
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        newUser.setRole("USER");
+        newUser.setName(registerRequest.getName());
+        newUser.setRole("user");
         userRepository.save(newUser);
         return ResponseEntity.ok("User registered successfully");
     }
