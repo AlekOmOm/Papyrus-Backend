@@ -14,6 +14,8 @@ import java.util.Collection;
 //This class is being ussed in UserDetailServiceImpl.java
 //So the no usage is fake.
 
+
+
 public interface UserDetails extends Serializable {
 
     Collection<? extends GrantedAuthority> getAuthorities();
