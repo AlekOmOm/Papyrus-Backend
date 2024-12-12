@@ -100,7 +100,6 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     }
 
     // ----------------- CRUD -----------------
-
     public UserDTO find(UserDTO userDTO) {
         if (userDTO.getId() != null && userDTO.getId() != 0) {
             System.out.println("userDTO.getId() != null: "+userDTO.getId());
