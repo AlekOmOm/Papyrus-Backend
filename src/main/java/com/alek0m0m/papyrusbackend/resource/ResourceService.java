@@ -3,9 +3,7 @@ package com.alek0m0m.papyrusbackend.resource;
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.exception.ResourceNotFoundException;
 import com.alek0m0m.papyrusbackend.exception.UserNotFoundException;
-import com.alek0m0m.papyrusbackend.field.FieldDTO;
 import com.alek0m0m.papyrusbackend.user.User;
-import com.alek0m0m.papyrusbackend.user.UserDTO;
 import com.alek0m0m.papyrusbackend.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +18,15 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
     private final ResourceRepository repository;
     private final ResourceMapper mapper;
     private final UserRepository userRepository;
+    private final ResourceRepository resourceRepository;
 
     @Autowired
-    public ResourceService(ResourceRepository repository, ResourceMapper mapper, ResourceRepository resourceRepository, UserRepository userRepository) {
+    public ResourceService(ResourceRepository repository, ResourceMapper mapper, UserRepository userRepository, ResourceRepository resourceRepository) {
         super(repository, mapper);
         this.repository = resourceRepository;
         this.mapper = mapper;
         this.userRepository = userRepository;
+        this.resourceRepository = resourceRepository;
     }
 
     @Override
@@ -116,6 +116,10 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
         return savedResources.stream()
                 .map(this::save)
                 .toList();
+    }
+
+    public List<ResourceDTO> searchResources(String query) {
+        return resourceRepository.findByNameContainingIgnoreCase(query);
     }
 
 

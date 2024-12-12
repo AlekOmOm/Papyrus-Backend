@@ -10,43 +10,20 @@ import java.util.List;
 @RequestMapping("/api/resources")
 public class ResourceController extends BaseRESTController<ResourceDTOInput, ResourceDTO, Resource, ResourceMapper, ResourceService, ResourceRepository> {
 
+    private final ResourceService resourceService;
+
     @Autowired
-    public ResourceController(ResourceService service) {
+    public ResourceController(ResourceService service, ResourceService resourceService) {
         super(service);
+        this.resourceService = resourceService;
     }
 
-
-
-    /*
-    @GetMapping("{id}")
-    public ResponseEntity<ResourceDTO> getResourceById(@PathVariable Long id){
-        ResourceDTO resourceDTO = service.findById(id);
-        return ResponseEntity.ok(resourceDTO);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ResourceDTO>> getAllResources(){
-        List<ResourceDTO> resourceDTOs = resourceDTOs.findAll();
-        return ResponseEntity.ok(resourceDTOs);
-    }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ResourceDTO>> searchResources(@RequestParam String name, @RequestParam String author){
-        List<ResourceDTO> resourceDTOs = service.findByNameAndAuthor(name, author);
-        return ResponseEntity.ok(resourceDTOs);
+    public ResponseEntity<List<ResourceDTO>> searchResources(@RequestParam String query) {
+        List<ResourceDTO> resources = resourceService.searchResources(query);
+        return ResponseEntity.ok(resources);
     }
-
-    /*@PutMapping("{id}")
-    public ResponseEntity<ResourceDTO> updateResource(@PathVariable Long id, @RequestBody ResourceDTO resourceDTO){
-        ResourceDTO updatedResource = resourceService.update(id, resourceDTO);
-        return ResponseEntity.ok(updatedResource);
-    }/*
-
-    /*@DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteResource(@PathVariable Long id){
-        resourceService.delete(id);
-        return ResponseEntity.ok().build();
-    }*/
 
 
 }
