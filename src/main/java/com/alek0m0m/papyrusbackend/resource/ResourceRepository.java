@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface ResourceRepository extends BaseRepository<Resource> {
 
+    Resource findByNameAndRefId(String name, String refId);
+
 
     List<ResourceDTO> findByNameContainingIgnoreCase(String query);
 

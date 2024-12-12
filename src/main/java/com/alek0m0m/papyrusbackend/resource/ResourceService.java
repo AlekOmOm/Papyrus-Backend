@@ -92,6 +92,10 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
         return list.get().get(0);
     }
 
+    public boolean isUnique(String name, String refId) {
+        return repository.findByNameAndRefId(name, refId) == null;
+    }
+
     // ----------------- Business Operations -----------------
 
 

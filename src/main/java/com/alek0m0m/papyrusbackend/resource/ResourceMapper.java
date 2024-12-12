@@ -38,7 +38,8 @@ public class ResourceMapper extends EntityToDTOMapperImpl<ResourceDTOInput, Reso
                     .setName(dto.getName() != null ? dto.getName() : entity.getName())
                     .setAuthor(dto.getAuthor() != null ? dto.getAuthor() : entity.getAuthor())
                     .setFromDate(dto.getFromDate() != null ? dto.getFromDate() : entity.getFromDate())
-                    .setToDate(dto.getToDate() != null ? dto.getToDate() : entity.getToDate());
+                    .setToDate(dto.getToDate() != null ? dto.getToDate() : entity.getToDate())
+                    .setRef_id(dto.getRefId() != null ? dto.getRefId() : entity.getRefId());
     }
 
 
