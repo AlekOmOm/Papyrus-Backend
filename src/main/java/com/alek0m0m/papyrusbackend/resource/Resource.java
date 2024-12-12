@@ -18,13 +18,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Resource extends BaseEntity {
 
+    @Column(name = "name", nullable = false)
     private String name;
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
 
     @JsonProperty("ref_id")
-    @Column(name = "ref_id", unique = true)
+    @Column(name = "ref_id", unique = true, nullable = false)
     private String refId;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "savedResources")
