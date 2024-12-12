@@ -1,9 +1,13 @@
 package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.jpa.BaseEntityDTO;
-import com.alek0m0m.papyrusbackend.user.User;
 import com.alek0m0m.papyrusbackend.user.UserDTO;
-import jakarta.persistence.Version;
+import com.alek0m0m.papyrusbackend.user.User;
+import com.alek0m0m.papyrusbackend.user.UserMapper;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -21,7 +25,8 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private List<UserDTO> users = new ArrayList<>();
+    private String refId;
+
 
     // ----------------- Constructors -----------------
 
@@ -32,6 +37,7 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
+        this.refId = input.getRefId();
     }
 
     public ResourceDTO(ResourceDTOInput input) {
@@ -41,6 +47,7 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
+        this.refId = input.getRefId();
     }
 
 
@@ -53,7 +60,8 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
                 .setName(this.getName())
                 .setAuthor(this.getAuthor())
                 .setFromDate(this.getFromDate())
-                .setToDate(this.getToDate());
+                .setToDate(this.getToDate())
+                .setRefId(this.getRefId());
         return res;
     }
 
@@ -85,9 +93,10 @@ public class ResourceDTO extends BaseEntityDTO<Resource> {
         return this;
     }
 
-    public ResourceDTO setUsers(List<UserDTO> users) {
-        this.users = users;
+    public ResourceDTO setRef_id(String refId) {
+        this.refId = refId;
         return this;
     }
+
 
 }

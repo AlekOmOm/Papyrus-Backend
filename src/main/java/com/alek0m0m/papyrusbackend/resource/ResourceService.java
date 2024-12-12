@@ -1,8 +1,10 @@
 package com.alek0m0m.papyrusbackend.resource;
 
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
-import com.alek0m0m.papyrusbackend.field.FieldDTO;
-import com.alek0m0m.papyrusbackend.user.UserDTO;
+import com.alek0m0m.papyrusbackend.exception.ResourceNotFoundException;
+import com.alek0m0m.papyrusbackend.exception.UserNotFoundException;
+import com.alek0m0m.papyrusbackend.user.User;
+import com.alek0m0m.papyrusbackend.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +17,16 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
 
     private final ResourceRepository repository;
     private final ResourceMapper mapper;
+    private final UserRepository userRepository;
+    private final ResourceRepository resourceRepository;
 
     @Autowired
-    public ResourceService(ResourceRepository repository, ResourceMapper mapper, ResourceRepository resourceRepository) {
+    public ResourceService(ResourceRepository repository, ResourceMapper mapper, UserRepository userRepository, ResourceRepository resourceRepository) {
         super(repository, mapper);
         this.repository = resourceRepository;
         this.mapper = mapper;
+        this.userRepository = userRepository;
+        this.resourceRepository = resourceRepository;
     }
 
     @Override
@@ -51,14 +57,11 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
 
     public ResourceDTO find(ResourceDTO dto) {
         if (dto.getId() != null && dto.getId() != 0) {
-            System.out.println("userDTO.getId() != null: "+dto.getId());
             return findById(dto.getId());
         }
 
-        // name and author != null
         if (dto.getName() != null || dto.getAuthor() != null) {
             return findByNameAndAuthor(dto.getName(), dto.getAuthor());
-
         }
 
         return null;
@@ -88,6 +91,41 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
 
         return list.get().get(0);
     }
+
+    public boolean isUnique(String name, String refId) {
+        return repository.findByNameAndRefId(name, refId) == null;
+    }
+
+    // ----------------- Business Operations -----------------
+
+
+    @Transactional
+    public ResourceDTO savePersonalResource(Long resourceId, Long userId) {
+        Resource resource = repository.findById(resourceId).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        System.out.println("resource: "+resource);
+        System.out.println("user: "+user);
+
+        resource.getUsers().add(user);
+        user.getSavedResources().add(resource);
+
+        repository.save(resource);
+        userRepository.save(user);
+
+        return mapper.convert(resource);
+    }
+
+    public List<ResourceDTO> save(List<ResourceDTO> savedResources) {
+        return savedResources.stream()
+                .map(this::save)
+                .toList();
+    }
+
+    public List<ResourceDTO> searchResources(String query) {
+        return resourceRepository.findByNameContainingIgnoreCase(query);
+    }
+
 
     // ----------------- Helper -----------------
 

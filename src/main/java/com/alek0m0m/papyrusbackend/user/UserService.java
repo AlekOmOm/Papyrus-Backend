@@ -5,15 +5,19 @@ import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.field.FieldDTO;
 import com.alek0m0m.papyrusbackend.field.FieldService;
+import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.alek0m0m.papyrusbackend.resource.ResourceDTO;
+import com.alek0m0m.papyrusbackend.resource.ResourceRepository;
 import com.alek0m0m.papyrusbackend.resource.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,14 +27,16 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     private final FieldService fieldService;
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final ResourceRepository resourceRepository;
 
     @Autowired
-    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService, UserRepository userRepository) {
+    public UserService(UserRepository repository, UserMapper mapper, ResourceService resourceService, FieldService fieldService, UserRepository userRepository, ResourceRepository resourceRepository) {
         super(repository, mapper);
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.fieldService = fieldService;
         this.resourceService = resourceService;
+        this.resourceRepository = resourceRepository;
     }
 
     @Override
@@ -38,21 +44,34 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
         //getRepository().resetAutoIncrement();
     }
 
-
-    public UserDTO save(UserDTO entityDTO) {
-        if (entityDTO == null) {
+    public UserDTO save(UserDTO dto) {
+        if (dto == null) {
             return null;
         }
 
-        UserDTO existingUser = find(entityDTO);
+        printUserSavedResources(dto);
+
+        UserDTO existingUser = find(dto);
 
         if (existingUser != null) {
-            existingUser = mapper.map(entityDTO, existingUser.toEntity());
-            return super.update(existingUser);
+            dto = mapper.map(dto, existingUser.toEntity());
         }
 
-        return super.save(entityDTO);
+        setChildren(dto, existingUser);
+        return super.save(dto);
     }
+
+    private void printUserSavedResources(UserDTO dto) {
+        List<String> uniqueNames = dto.getSavedResources().stream()
+                .map(ResourceDTO::getName)
+                .distinct()
+                .collect(Collectors.toList());
+
+        for (ResourceDTO resource : dto.getSavedResources()) {
+            System.out.println(resource.getName());
+        }
+    }
+
 
     // ----------------- Main Business Operations -----------------
 
@@ -60,14 +79,25 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     public void addUserResourceRelation(Long userId, Long resourceId) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        ResourceDTO resource = resourceService.findById(resourceId);
+        Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new IllegalArgumentException("Resource not found"));
 
-        user.getSavedResources().add(resource.toEntity());
-        userRepository.save(user);
+        boolean relationExists = isRelationExists(user, resource);
+
+        if (relationExists) {
+            return;
+        }
+
+        user.getSavedResources().add(resource);
+        userRepository.saveAndFlush(user);
     }
 
-
-
+    private static boolean isRelationExists(User user, Resource resource) {
+        return user.getSavedResources().stream()
+                .anyMatch(savedResource
+                        -> savedResource.getName().equals(resource.getName())
+                        && savedResource.getRefId().equals(resource.getRefId())
+                );
+    }
 
     // ----------------- CRUD -----------------
 
@@ -86,9 +116,17 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
 
     @Transactional
     public UserDTO findByIdWithFieldAndResources(Long userId) {
-        UserDTO user = findById(userId);
+        Optional<User> user = userRepository.findById(userId);
 
-        return setField(user);
+        if (user == null) {
+            return null;
+        }
+
+        UserDTO dtoClean = new UserDTO(user.get());
+
+        UserDTO dto = setField(new UserDTO(user.get()));
+
+        return new UserDTO(user.get());
     }
 
     public UserDTO findByNameAndEmail(String name, String email) {
@@ -122,6 +160,20 @@ public class UserService extends BaseService<UserDTOInput, UserDTO, User, UserMa
     private UserDTO setField(UserDTO user) {
         FieldDTO field = fieldService.find(user.getField());
         return user.setField(field);
+    }
+
+    private void setChildren(UserDTO dto, UserDTO existingUser) {
+        if (existingUser == null) {
+            return;
+        }
+        dto.setField(fieldService.save(existingUser.getField()));
+
+        List<ResourceDTO> res = existingUser.getSavedResources().stream()
+                .distinct() // remove duplicates
+                .collect(Collectors.toList());
+
+        dto.setSavedResources(resourceService.save(res)
+        );
     }
 
 }

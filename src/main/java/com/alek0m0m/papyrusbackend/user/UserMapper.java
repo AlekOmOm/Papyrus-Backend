@@ -3,12 +3,19 @@ package com.alek0m0m.papyrusbackend.user;
 import com.Alek0m0m.library.jpa.EntityToDTOMapperImpl;
 import com.Alek0m0m.library.spring.web.mvc.BaseService;
 import com.alek0m0m.papyrusbackend.field.FieldMapper;
+import com.alek0m0m.papyrusbackend.resource.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserMapper extends EntityToDTOMapperImpl<UserDTOInput, UserDTO, User> {
+
+    private final ResourceService resourceService;
+
+    public UserMapper(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
 
     @Override
     public UserDTO toDTO(UserDTOInput dtoInput) {
@@ -34,7 +41,7 @@ public class UserMapper extends EntityToDTOMapperImpl<UserDTOInput, UserDTO, Use
             return new UserDTO(entity);
         }
 
-        return new UserDTO(entity)
+        UserDTO updated = new UserDTO(entity)
                 .setName(dto.getName() != null ? dto.getName() : entity.getName())
                 .setEmail(dto.getEmail() != null ? dto.getEmail() : entity.getEmail())
                 .setPassword(dto.getPassword() != null ? dto.getPassword() : entity.getPassword())
@@ -42,6 +49,7 @@ public class UserMapper extends EntityToDTOMapperImpl<UserDTOInput, UserDTO, Use
                 .setField(dto.getField() != null
                         ? dto.getField()
                         : new FieldMapper().mapEntityToDTO(entity.getField()));
+        return updated;
     }
 
 

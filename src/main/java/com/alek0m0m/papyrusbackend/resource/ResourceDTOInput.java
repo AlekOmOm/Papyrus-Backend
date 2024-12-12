@@ -1,6 +1,7 @@
 package com.alek0m0m.papyrusbackend.resource;
 
 import com.alek0m0m.papyrusbackend.user.UserDTOInput;
+import com.alek0m0m.papyrusbackend.user.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class ResourceDTOInput {
     private String author;
     private LocalDate fromDate;
     private LocalDate toDate;
+    private String refId;
+
 
     public ResourceDTOInput(ResourceDTO input) {
         this.id = input.getId();
@@ -28,6 +31,7 @@ public class ResourceDTOInput {
         this.author = input.getAuthor();
         this.fromDate = input.getFromDate();
         this.toDate = input.getToDate();
+        this.refId = input.getRefId();
     }
 
     // setters return ResourceDTOInput
@@ -54,6 +58,11 @@ public class ResourceDTOInput {
 
     public ResourceDTOInput setToDate(LocalDate toDate) {
         this.toDate = toDate;
+        return this;
+    }
+
+    public ResourceDTOInput setRef_id(String refId) {
+        this.refId = refId;
         return this;
     }
 

@@ -78,24 +78,28 @@ public class InitData implements CommandLineRunner {
         return new ResourceDTOInput[]{
                 new ResourceDTOInput()
                         .setName("Metaphysics")
+                        .setRef_id("asd1")
                         .setAuthor("Aristotle")
                         .setFromDate(LocalDate.of(350, 1, 1))
                         .setToDate(LocalDate.of(350, 12, 31)),
                 new ResourceDTOInput()
 
                         .setName("The Republic")
+                        .setRef_id("asd2")
                         .setAuthor("Plato")
                         .setFromDate(LocalDate.of(380, 1, 1))
                         .setToDate(LocalDate.of(380, 12, 31)),
                 new ResourceDTOInput()
 
                         .setName("The Iliad")
+                        .setRef_id("asd3")
                         .setAuthor("Homer")
                         .setFromDate(LocalDate.of(762, 1, 1))
                         .setToDate(LocalDate.of(762, 12, 31)),
                 new ResourceDTOInput()
 
                         .setName("The Art of War")
+                        .setRef_id("asd4")
                         .setAuthor("Sun Tzu")
                         .setFromDate(LocalDate.of(-500, 1, 1))
                         .setToDate(LocalDate.of(-500, 12, 31)),
@@ -157,6 +161,48 @@ public class InitData implements CommandLineRunner {
     }
 
     private void initUserSavedResources() {
+
+        // Saving the Test users and ressources
+        printCount(" before", "user_resource", userService);
+
+        List<UserDTO> usersRepo = userService.findAll();
+        List<ResourceDTO> resourcesRepo = resourceService.findAll();
+
+        for (UserDTO user : usersRepo) {
+            if (user.getId() == 0 && user.getId() == null) {
+                continue;
+            }
+
+            for (ResourceDTO resource : resourcesRepo) {
+                if (resource.getId() == 0 && resource.getId() == null) {
+                    continue;
+                }
+
+                user.getSavedResources().stream().filter(resourceDTO ->
+                        resourceDTO.getName().equals(resource.getName()));
+
+
+                userService.addUserResourceRelation(user.getId(), resource.getId());
+            }
+
+        }
+
+        printCount(" after", "user_resource", userService);
+    }
+
+    private void printRelation(UserDTO user, ResourceDTO resource) {
+        // given:
+        UserDTO userDTO = userService.findById(user.getId());
+        ResourceDTO resourceDTO = resourceService.findById(resource.getId());
+
+        // when:
+        for (ResourceDTO res : userDTO.getSavedResources()) {
+            if (res.getId() == resourceDTO.getId()) {
+                System.out.println("printRelation:");
+                System.out.println(" - relation confirmed, user: "+userDTO.getName()+" and resource: "+resourceDTO.getName()+" saved");
+                return;
+            }
+        }
 
     }
 

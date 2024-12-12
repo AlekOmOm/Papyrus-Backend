@@ -29,7 +29,7 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     private Field field;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_resource",
             joinColumns = @JoinColumn(name = "user_id"),
