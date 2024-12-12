@@ -24,9 +24,6 @@ public class UserController extends BaseRESTController<UserDTOInput, UserDTO, Us
                 updatedEntity.setId(id); // Ensure the ID is set correctly
         return ResponseEntity.ok(this.getService().save(updatedEntity));
     }
-
-
-
 }
 
 

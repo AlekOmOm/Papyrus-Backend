@@ -1,23 +1,24 @@
 package com.alek0m0m.papyrusbackend.user;
 
-import com.Alek0m0m.library.jpa.*;
+import com.Alek0m0m.library.jpa.BaseEntity;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.resource.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Getter
 @Setter
 @ToString
-
 @AllArgsConstructor
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
 
     private String name;
     private String email;
@@ -36,10 +37,9 @@ public class User extends BaseEntity {
     )
     private List<Resource> savedResources = new ArrayList<>();
 
-    public User () {
+    public User() {
         this.field = new Field("root", new ArrayList<>());
     }
-
 
     // Setters (returning User)
     public User setId(long id) {
@@ -77,4 +77,42 @@ public class User extends BaseEntity {
         return this;
     }
 
+    // Method to set authorities
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.role = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Spring security methods
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> role);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
