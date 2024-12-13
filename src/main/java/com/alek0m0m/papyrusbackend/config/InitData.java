@@ -82,28 +82,89 @@ public class InitData implements CommandLineRunner {
                         .setAuthor("Aristotle")
                         .setFromDate(LocalDate.of(350, 1, 1))
                         .setToDate(LocalDate.of(350, 12, 31)),
-                new ResourceDTOInput()
 
+                new ResourceDTOInput()
                         .setName("The Republic")
                         .setRef_id("asd2")
                         .setAuthor("Plato")
                         .setFromDate(LocalDate.of(380, 1, 1))
                         .setToDate(LocalDate.of(380, 12, 31)),
-                new ResourceDTOInput()
 
+                new ResourceDTOInput()
                         .setName("The Iliad")
                         .setRef_id("asd3")
                         .setAuthor("Homer")
                         .setFromDate(LocalDate.of(762, 1, 1))
                         .setToDate(LocalDate.of(762, 12, 31)),
-                new ResourceDTOInput()
 
+                new ResourceDTOInput()
                         .setName("The Art of War")
                         .setRef_id("asd4")
                         .setAuthor("Sun Tzu")
                         .setFromDate(LocalDate.of(-500, 1, 1))
                         .setToDate(LocalDate.of(-500, 12, 31)),
+
+                new ResourceDTOInput()
+                        .setName("The Prince")
+                        .setRef_id("asd5")
+                        .setAuthor("Niccolò")
+                        .setFromDate(LocalDate.of(1532, 1, 1))
+                        .setToDate(LocalDate.of(1532, 12, 31)),
+
+                new ResourceDTOInput()
+                        .setName("The Wealth of Nations")
+                        .setRef_id("asd6")
+                        .setAuthor("Adam Smith")
+                        .setFromDate(LocalDate.of(1776, 1, 1))
+                        .setToDate(LocalDate.of(1776, 12, 31)),
+
+                new ResourceDTOInput()
+                        .setName("Clara's Favorit")
+                        .setRef_id("asd7")
+                        .setAuthor("Clara")
+                        .setFromDate(LocalDate.of(2021, 1, 1))
+                        .setToDate(LocalDate.of(2021, 12, 31)),
+
+                new ResourceDTOInput()
+                        .setName("Poor Dad Rich Dad")
+                        .setRef_id("asd8")
+                        .setAuthor("Robert Kiyosaki")
+                        .setFromDate(LocalDate.of(1997, 1, 1))
+                        .setToDate(LocalDate.of(1997, 12, 31)),
+
+                new ResourceDTOInput()
+                        .setName("The 7 Habits of Highly Effective People")
+                        .setRef_id("asd9")
+                        .setAuthor("Stephen")
+                        .setFromDate(LocalDate.of(1989, 1, 1))
+                        .setToDate(LocalDate.of(1989, 12, 31)),
+
+                new ResourceDTOInput()
+                        .setName("The Lean Startup")
+                        .setRef_id("asd10")
+                        .setAuthor("Eric Ries")
+                        .setFromDate(LocalDate.of(2011, 1, 1))
+                        .setToDate(LocalDate.of(2011, 12, 31)),
+
         };
+    }
+
+    private void initRecentResources() {
+        // Saving the Test users and ressources
+        List<ResourceDTOInput> recentResources = List.of(
+                new ResourceDTOInput()
+                        .setName("The Recent Resource 1")
+                        .setRef_id("asd1")
+                        .setAuthor("Aristotle")
+                        .setFromDate(LocalDate.of(350, 1, 1))
+                        .setToDate(LocalDate.of(350, 12, 31)),
+                new ResourceDTOInput()
+                        .setName("The Recent Resource 2")
+                        .setRef_id("asd2")
+                        .setAuthor("Plato")
+                        .setFromDate(LocalDate.of(380, 1, 1))
+                        .setToDate(LocalDate.of(380, 12, 31))
+        );
     }
 
 
@@ -116,6 +177,8 @@ public class InitData implements CommandLineRunner {
         // initFields();
 
         initResources();
+
+        initRecentResources();
 
         initUserSavedResources();
     }

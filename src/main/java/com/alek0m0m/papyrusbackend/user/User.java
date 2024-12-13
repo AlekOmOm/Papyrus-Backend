@@ -29,6 +29,7 @@ public class User extends BaseEntity {
     private Field field;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     @JoinTable(
             name = "user_resource",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -2,6 +2,7 @@ package com.alek0m0m.papyrusbackend.resource;
 import com.Alek0m0m.library.jpa.BaseEntity;
 import com.alek0m0m.papyrusbackend.field.Field;
 import com.alek0m0m.papyrusbackend.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Resource extends BaseEntity {
     private String refId;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "savedResources")
+    @JsonIgnore
     private List<User> users;
 
     @ManyToOne

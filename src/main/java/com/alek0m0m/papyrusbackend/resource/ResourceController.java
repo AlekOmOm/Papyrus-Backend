@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceController extends BaseRESTController<ResourceDTOInput, ResourceDTO, Resource, ResourceMapper, ResourceService, ResourceRepository> {
@@ -26,41 +27,41 @@ public class ResourceController extends BaseRESTController<ResourceDTOInput, Res
         return ResponseEntity.ok(response);
     }
 
-
-
-
-    /*
-    @GetMapping("{id}")
-    public ResponseEntity<ResourceDTO> getResourceById(@PathVariable Long id){
-        ResourceDTO resourceDTO = service.findById(id);
-        return ResponseEntity.ok(resourceDTO);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ResourceDTO>> getAllResources(){
-        List<ResourceDTO> resourceDTOs = resourceDTOs.findAll();
-        return ResponseEntity.ok(resourceDTOs);
+    @GetMapping("/recent")
+    public ResponseEntity<List<Resource>> getRecentResources() {
+        List<Resource> recentResourcesesources = service.getRecentResources();
+        return ResponseEntity.ok(recentResourcesesources);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ResourceDTO>> searchResources(@RequestParam String name, @RequestParam String author){
-        List<ResourceDTO> resourceDTOs = service.findByNameAndAuthor(name, author);
-        return ResponseEntity.ok(resourceDTOs);
+    public ResponseEntity<List<Resource>> searchResources(@RequestParam String query) {
+        List<Resource> resources = service.searchResources(query);
+        return ResponseEntity.ok(resources);
     }
 
-    /*@PutMapping("{id}")
-    public ResponseEntity<ResourceDTO> updateResource(@PathVariable Long id, @RequestBody ResourceDTO resourceDTO){
-        ResourceDTO updatedResource = resourceService.update(id, resourceDTO);
-        return ResponseEntity.ok(updatedResource);
-    }/*
+    @GetMapping("/saved/search")
+    public ResponseEntity<List<Resource>> searchSavedResources(@RequestParam String query) {
+        List<Resource> resources = service.searchSavedResources(query);
+        return ResponseEntity.ok(resources);
+    }
 
-    /*@DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteResource(@PathVariable Long id){
-        resourceService.delete(id);
-        return ResponseEntity.ok().build();
-    }*/
+    @GetMapping("/recent/search")
+    public ResponseEntity<List<Resource>> searchRecentResources(@RequestParam String query) {
+        List<Resource> resources = service.searchRecentResources(query);
+        return ResponseEntity.ok(resources);
+    }
 
+    @GetMapping("/project/search")
+    public ResponseEntity<List<Resource>> searchProjectResources(@RequestParam String query) {
+        List<Resource> resources = service.searchProjectResources(query);
+        return ResponseEntity.ok(resources);
+    }
 
+    @GetMapping("/topics/search")
+    public ResponseEntity<List<Resource>> searchTopicsResources(@RequestParam String query) {
+        List<Resource> resources = service.searchTopicsResources(query);
+        return ResponseEntity.ok(resources);
+    }
 }
 
 

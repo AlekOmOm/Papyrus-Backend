@@ -122,6 +122,30 @@ public class ResourceService extends BaseService<ResourceDTOInput, ResourceDTO, 
                 .toList();
     }
 
+    // ----------------- Search -----------------
+    public List<Resource> searchResources(String query) {
+        return repository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Resource> searchSavedResources(String query) {
+        return repository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Resource> searchRecentResources(String query) {
+        return repository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Resource> searchProjectResources(String query) {
+        return repository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Resource> searchTopicsResources(String query) {
+        return repository.findByNameContainingIgnoreCase(query);
+    }
+
+    public List<Resource> getRecentResources() {
+        return repository.findAll();
+    }
 
     // ----------------- Helper -----------------
 
