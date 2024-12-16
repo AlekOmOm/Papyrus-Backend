@@ -27,8 +27,6 @@ public class ResourceControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private ResourceRepository resourceRepository;
@@ -59,22 +57,7 @@ public class ResourceControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
-    public void CreateResource_ShouldSaveToDatabase_WhenValidDataProvided() throws Exception {
 
-        Resource resource = new Resource();
-        resource.setName("Learning Java");
-        resource.setRefId("123456");
-
-        mockMvc.perform(post("/api/resources")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(resource)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Learning Java"))
-                .andExpect(jsonPath("$.refId").value("123456"));
-
-        System.out.println("Resource saved successfully" + resource);
-    }
 
     @Test
     public void testDuplicateRefIdCannotBeSaved() {
